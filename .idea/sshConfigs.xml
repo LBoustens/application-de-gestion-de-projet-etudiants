@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="webmmi.iut-tlse3.fr" id="8cc49865-4990-408d-97da-6479cf66529d" port="2281" customName="sftp://webmmi.iut-tlse3.fr" nameFormat="CUSTOM" username="bsl4614a" useOpenSSHConfig="true">
+        <option name="customName" value="sftp://webmmi.iut-tlse3.fr" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>

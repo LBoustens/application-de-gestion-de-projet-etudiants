@@ -1,0 +1,217 @@
+<?php
+/**
+ * Définition d'une classe permettant de gérer les Projet
+ *   en relation avec la base de données
+ */
+class ProjetManager
+{
+
+	private $_db; // Instance de PDO - objet de connexion au SGBD
+
+	/**
+	 * Constructeur = initialisation de la connexion vers le SGBD
+	 */
+	public function __construct($db)
+	{
+		$this->_db = $db;
+	}
+
+	/**
+	 * ajout d'un Projet dans la BD
+	 * @param Projet à ajouter
+	 * @return int true si l'ajout a bien eu lieu, false sinon
+	 */
+	public function add(Projet $proj)
+	{
+		// calcul d'un nouveau code du Projet non déja utilisé = Maximum + 1
+		$stmt = $this->_db->prepare("SELECT max(idprojet) AS maximum FROM projet");
+		$stmt->execute();
+		$proj->setIdProjet($stmt->fetchColumn() + 1);
+
+		// requete d'ajout dans la BD
+		$req2 = "INSERT INTO projet (idprojet,titre,descproj,image,liendemo,idcontexte,anneecrea) VALUES (?,?,?,?,?,?,?)";
+		$stmt = $this->_db->prepare($req2);
+		$res = $stmt->execute(array($proj->idProjet(), $proj->titre(), $proj->descProj(), $proj->image(), $proj->lienDemo(), $proj->idContexte(), $proj->anneeCrea()));
+		// pour debuguer les requêtes SQL
+		$errorInfo = $stmt->errorInfo();
+		if ($errorInfo[0] != 0) {
+			print_r($errorInfo);
+		}
+		return $res;
+		/**$idcontexte = $bd->lastInsertId();	 */
+	}
+
+	/**
+	 * nombre de Projets dans la base de données
+	 * @return int le nb de Projet
+	 */
+	public function count(): int
+	{
+		$stmt = $this->_db->prepare('SELECT COUNT(*) FROM projet');
+		$stmt->execute();
+		return $stmt->fetchColumn();
+	}
+
+	/**
+	 * suppression d'un Projet dans la base de données
+	 * @param Projet
+	 * @return boolean true si suppression, false sinon
+	 */
+	public function delete(Projet $proj): bool
+	{
+		$req = "DELETE FROM projet NATURAL JOIN participer WHERE idprojet = ?";
+		$stmt = $this->_db->prepare($req);
+		return $stmt->execute(array($proj->idProjet()));
+	}
+
+	/**
+	 * echerche dans la BD d'un Projet à partir de son id
+	 * @param int $iditi
+	 * @return Projet
+	 */
+	public function get(int $idprojet): Projet
+	{
+		$req = 'SELECT idprojet,titre,descproj,image,liendemo,idcontexte,anneecrea FROM projet WHERE idprojet=?';
+		$stmt = $this->_db->prepare($req);
+		$stmt->execute(array($idprojet));
+		// pour debuguer les requêtes SQL
+		$errorInfo = $stmt->errorInfo();
+		if ($errorInfo[0] != 0) {
+			print_r($errorInfo);
+		}
+		$projs = new Projet($stmt->fetch());
+		return $projs;
+	}
+
+	/**
+	 * retourne l'ensemble des Projets présents dans la BD
+	 * @return Projet[]
+	 */
+	public function getList()
+	{
+		$projets = array();
+		$req = "SELECT idprojet,titre,descproj,image,liendemo,idcontexte,anneecrea FROM projet";
+		$stmt = $this->_db->prepare($req);
+		$stmt->execute();
+		// pour debuguer les requêtes SQL
+		$errorInfo = $stmt->errorInfo();
+		if ($errorInfo[0] != 0) {
+			print_r($errorInfo);
+		}
+		// récup des données
+		while ($donnees = $stmt->fetch()) {
+			$projets[] = new Projet($donnees);
+		}
+		return $projets;
+	}
+
+	/**
+	 * retourne l'ensemble des Projets présents dans la BD pour un membre
+	 * @param int idmembre
+	 * @return Projet[]
+	 */
+	public function getListUtilisateur(int $idutilisateur)
+	{
+		$projets = array();
+		$req = "SELECT idprojet,idutilisateur,titre,descproj,image,liendemo,idcontexte,anneecrea FROM projet NATURAL JOIN participer WHERE idutilisateur=?";
+		$stmt = $this->_db->prepare($req);
+		$stmt->execute(array($idutilisateur));
+		// pour debuguer les requêtes SQL
+		$errorInfo = $stmt->errorInfo();
+		if ($errorInfo[0] != 0) {
+			print_r($errorInfo);
+		}
+		// recup des données
+		while ($donnees = $stmt->fetch()) {
+			$projets[] = new Projet($donnees);
+		}
+		return $projets;
+	}
+
+    public function getDetailsProj($idprojet)
+    {
+        $projs = array();
+        $req = 'SELECT idprojet,titre,descproj,image,liendemo,idcontexte,anneecrea FROM projet WHERE idprojet=?';
+        $stmt = $this->_db->prepare($req);
+        $stmt->execute(array($idprojet));
+        // pour debuguer les requêtes SQL
+        $errorInfo = $stmt->errorInfo();
+        if ($errorInfo[0] != 0) {
+            print_r($errorInfo);
+        }
+        while ($donnees = $stmt->fetch()) {
+            $projs = new Projet($donnees);
+        }
+        return $projs;
+    }
+	/**
+	 * méthode de recherche d'un Projet dans la BD à partir des critères passés en paramètre
+	 * @param string $lieudepart
+	 * @param string $lieudepart
+	 * @param string $datedepart
+	 * @return Itineraire[]
+	 */
+	// public function search(string $lieudepart, string $lieuarrivee, string $datedepart) {
+	// 	$req = "SELECT iditi,lieudepart,lieuarrivee,heuredepart,date_format(datedepart,'%d/%c/%Y')as datedepart,tarif,nbplaces,bagagesautorises,details FROM itineraire";
+	// 	$cond = '';
+
+	// 	if ($lieudepart<>"")
+	// 	{ 	$cond = $cond . " lieudepart like '%". $lieudepart ."%'";
+	// 	}
+	// 	if ($lieuarrivee<>"")
+	// 	{ 	if ($cond<>"") $cond .= " AND ";
+	// 		$cond = $cond . " lieuarrivee like '%" . $lieuarrivee ."%'";
+	// 	}
+	// 	if ($datedepart<>"")
+	// 	{ 	if ($cond<>"") $cond .= " AND ";
+	// 		$cond = $cond . " datedepart = '" . dateChgmtFormat($datedepart) . "'";
+	// 	}
+	// 	if ($cond <>"")
+	// 	{ 	$req .= " WHERE " . $cond;
+	// 	}
+	// 	// execution de la requete
+	// 	$stmt = $this->_db->prepare($req);
+	// 	$stmt->execute();
+	// 	// pour debuguer les requêtes SQL
+	// 	$errorInfo = $stmt->errorInfo();
+	// 	if ($errorInfo[0] != 0) {
+	// 		print_r($errorInfo);
+	// 	}
+	// 	$itineraires = array();
+	// 	while ($donnees = $stmt->fetch())
+	// 	{
+	// 		$itineraires[] = new Itineraire($donnees);
+	// 	}
+	// 	return $itineraires;
+	// }
+
+	/**
+	 * modification d'un Projet dans la BD
+	 * @param Projet
+	 * @return boolean
+	 */
+	public function update(Projet $proj): bool
+	{
+		$req = "UPDATE projet SET titre = :titre, "
+			. "descproj = :descproj, "
+			. "image = :image, "
+			. "liendemo  = :liendemo, "
+			. " WHERE idprojet= :idprojet";
+		//var_dump($iti);
+
+		$stmt = $this->_db->prepare($req);
+		$stmt->execute(
+			array(
+				":titre" => $proj->titre(),
+				":descproj" => $proj->descProj(),
+				":image" => $proj->image(),
+				":liendemo" => $proj->lienDemo(),
+				":idprojet" => $proj->idProjet()
+			)
+		);
+		return $stmt->rowCount();
+
+	}
+}
+
+?>

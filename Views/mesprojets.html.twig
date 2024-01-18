@@ -1,0 +1,38 @@
+{% extends "index.html.twig" %}
+
+{% block div %}
+    <div class="container-fluid">
+        <div class="row">
+            {% for proj in projets %}
+                <div class="col col-md-3 mt-3">
+                    <div class="card text-white bg-dark">
+                        <div class="card-body">
+                            <p class="text-center">
+                                <strong>{{ proj.titre }}</strong>
+                            </p>
+                            {# <p>Catégorie :
+
+																	{{ cates.nomcate }}
+
+															</p> #}
+                            <img src="img/{{proj.image}}" class="img-fluid pb-2" alt="{{proj.titre}}">
+                            {# <p>Tags :
+								{{ tags.nomtag }}
+							</p> #}
+                            <p>{{proj.descproj}}</p>
+                            <p class="text-end">Créé en : {{proj.anneecrea}}</p>
+                            <!-- Ajout du bouton "Voir détails projet" en blanc -->
+                            <form id="details" method="post" action="index.php?action=details">
+                                <input type="hidden" id="idutilisateur" name="idutilisateur" value="1">
+                                <input type="hidden" id="idprojet" name="idprojet" value="{{proj.idprojet}}">
+                                <button type="submit" name="valid_details" class="btn btn-outline-light btn-sm">Voir détails projet</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}

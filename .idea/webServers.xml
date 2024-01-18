@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="74c1cfcd-02e2-4111-b88f-5a150420f5b6" name="sftp://webmmi.iut-tlse3.fr" url="https://webmmi.iut-tlse3.fr/~bsl4614a/App-Gestion_de_Projet/">
+        <fileTransfer rootFolder="/data/public_html/App-Gestion_de_Projet" accessType="SFTP" host="webmmi.iut-tlse3.fr" port="2281" sshConfigId="8cc49865-4990-408d-97da-6479cf66529d" sshConfig="sftp://webmmi.iut-tlse3.fr">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

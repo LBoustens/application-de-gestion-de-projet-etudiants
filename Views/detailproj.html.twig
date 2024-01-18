@@ -1,0 +1,73 @@
+{% extends "index.html.twig" %}
+
+{% block section %}
+
+	<div class="container">
+		<h1 class="text-center">
+		{{projs.titre}}
+			</h1>
+		<p class="px-2 px-md-5 mx-2 mx-md-5 text-center mb-3">
+			{{projs.descproj}}
+		</p>
+		<!-- Détails du projet -->
+		<div class="row ">
+			<div
+				class="col-md-8 mx-auto text-center">
+				<!-- Titre du projet centré -->
+				<h1 class="text-center"></h1>
+
+				<!-- Description centrée -->
+				<p class="text-center"></p>
+
+				<!-- Deux div en row -->
+				<div
+					class="row">
+					<!-- Div de gauche -->
+					<div class="col-md-6">
+						<p>
+							<strong>Catégorie :{% for detailcate in detailcates %}
+									{{detailcate.nomcate}}
+								{% endfor %}</strong>
+						</p>
+						<p>
+							<strong>Tags :
+								{% for detailtag in detailtags %}
+									{{detailtag.nomtag}}
+								{% endfor %}
+							</strong>
+						</p>
+						<p>
+							<strong>Créateur(s) :</strong>{% for detailuti in detailutis %}
+								{{detailuti.prenom}} {{detailuti.nom}}
+							{% endfor %}
+						</p>
+						<p>
+							<strong>Contexte :{% for detailcont in detailconts %}
+									{{detailcont.identifiant}} - {{detailcont.semestre}} - {{detailcont.intitule}}
+								{% endfor %}</strong>
+						</p>
+						<p> <strong>Lien de la démo : </strong>
+								<a href="{{projs.liendemo}}">{{projs.liendemo}}</a></p>
+						<p> <strong>Lien des sources : </strong> {% for detailsource in detailsources %}
+						<a href="{{detailsource.url}}">{{detailsource.url}}</a>
+						{% endfor %}</p>
+
+					</div>
+
+					<!-- Div de droite avec l'image de représentation -->
+					<div class="col-md-6 text-center">
+						<img src="img/{{projs.image}}" alt="Image de représentation du projet" class="img-fluid">
+						<p class="mt-3 align-self-end">
+							<strong>Année de création : {{projs.anneecrea}}</strong>
+						</p>
+					</div>
+				</div>
+
+				<!-- Bouton de retour -->
+				<div class="text-center">
+					<a href="?action=projets" class="btn btn-primary mt-3">Retour aux projets</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

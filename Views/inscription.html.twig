@@ -1,0 +1,53 @@
+{% extends "index.html.twig" %}
+
+{% block section %}
+<div class="container d-flex justify-content-center align-items-center">
+    <div id="form"  class="contact-form m-4 p-4 w-50">
+        <div class="text-center">
+            <img id="connex" src="img/LOGO_MMi.webp" class="img-fluid mb-4" alt="Header Image">
+        </div>
+
+        <form action="index.php" method="post">
+            <fieldset>
+                <legend class="text-center">Inscription à un compte</legend>
+
+                <!-- Ajout des champs pour l'inscription -->
+                <div class="form-group mb-3">
+                    <label for="nom">Nom <span class="text-warning">*</span></label>
+                    <input type="text" class="form-control" id="nom" name="nom" required placeholder="Entrez votre nom">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="prenom">Prénom <span class="text-warning">*</span></label>
+                    <input type="text" class="form-control" id="prenom" name="prenom" required placeholder="Entrez votre prénom">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="email">Email <span class="text-warning">*</span></label>
+                    <input type="email" class="form-control" id="email" name="email" required placeholder="Entrez votre email">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="identifiantiut">Identifiant IUT <span class="text-warning">*</span></label>
+                    <input type="text" class="form-control" id="identifiantiut" name="identifiantiut" required placeholder="Entrez votre identifiant IUT">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="mdp">Mot de passe <span class="text-warning">*</span></label>
+                    <input type="password" class="form-control" id="mdp" name="mdp" required placeholder="Entrez votre mot de passe">
+                </div>
+
+                <div class="form-group form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="remember">
+                    <label class="form-check-label" for="remember">Rester connecté ?</label>
+                </div>
+
+                <button type="submit" name="inscription" value="inscription" class="btn btn-primary w-100">Inscription</button>
+            </fieldset>
+        </form>
+
+        <p class="mt-3 text-left">Déjà un compte ? <a href="?action=login">Connectez-vous</a></p>
+    </div>
+</div>
+
+{% endblock %}
