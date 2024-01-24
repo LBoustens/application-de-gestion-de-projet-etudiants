@@ -32,4 +32,16 @@ class ParticiperManager
 		}
 		return $res;
 	}
+
+    /**
+     * suppression d'une Participation dans la base de données
+     * @param Participer
+     * @return boolean true si suppression, false sinon
+     */
+    public function deleteParticiper(Participer $parti): bool
+    {
+        $req = "DELETE FROM participer WHERE idprojet = ?";
+        $stmt = $this->_db->prepare($req);
+        return $stmt->execute(array($parti->idProjet()));
+    }
 }

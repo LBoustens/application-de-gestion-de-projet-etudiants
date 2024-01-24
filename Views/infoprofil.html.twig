@@ -1,0 +1,44 @@
+{% extends "index.html.twig" %}
+
+{% block section %}
+
+    <div class="container">
+        {% for uti in utis %}
+
+        <h1 class="text-center pb-3">
+            {{uti.prenom}} {{uti.nom}}
+        </h1>
+        <!-- Info du profil -->
+        <div class="row ">
+            <div class="col-md-8 mx-auto text-center">
+                <!-- Deux div en row -->
+                <div class="row">
+                    <!-- Div de gauche -->
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Identifiant IUT :</strong> {{uti.identifiantiut}}
+                        </p>
+                        <p>
+                            <strong>Email :</strong> {{uti.email}}
+                        </p>
+                        <p>
+                            <strong>Mot De Passe :</strong> {{uti.mdp}}
+                        </p>
+                    </div>
+
+                    <!-- Div de droite avec l'image de représentation -->
+                    <div class="col-md-6 text-center">
+                        <img src="photodeprofil/{{uti.photodeprofil}}" alt="photo de profil de l'utilisateur " class="img-fluid">
+                    </div>
+                </div>
+
+                <!-- Bouton de retour -->
+                <div class="text-center">
+                    <a href="?action=profil" class="btn btn-primary mt-3">Modifier le Profil</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

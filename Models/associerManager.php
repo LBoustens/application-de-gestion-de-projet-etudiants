@@ -31,5 +31,17 @@ class AssocierManager
 		}
         return $res;
     }
+
+    /**
+     * suppression d'un Tags dans la base de données
+     * @param Tags
+     * @return boolean true si suppression, false sinon
+     */
+    public function deleteLiaisonTags(Associer $assostags): bool
+    {
+        $req = "DELETE FROM associer WHERE idprojet = ?";
+        $stmt = $this->_db->prepare($req);
+        return $stmt->execute(array($assostags->idProjet()));
+    }
 }
 

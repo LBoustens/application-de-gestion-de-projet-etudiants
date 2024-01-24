@@ -6,7 +6,7 @@
     <fieldset><legend class="pb-3">Choix du projet à supprimer</legend>
     <select name="idprojet" class="form-control form-control-sm mb-3">
     {% for proj in projets %}
-      <option value="{{proj.idprojet}}">{{proj.titre}} - {{proj.descriptionproj}} - {{proj.liendemo}} - {{proj.idcontexte}}</option>
+      <option value="{{proj.idprojet}}">{{proj.titre}} - {{proj.descproj}} - {{proj.anneecrea}}</option>
     {% endfor %}
     </select>
     <button type="submit" name="valider_supp"  class="btn btn-primary">Supprimer</button>

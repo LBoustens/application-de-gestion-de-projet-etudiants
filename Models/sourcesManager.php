@@ -50,5 +50,17 @@ class SourcesManager
 		}
 		return $sources;
 	}
+
+    /**
+     * suppression d'une Sources dans la base de données
+     * @param Sources
+     * @return boolean true si suppression, false sinon
+     */
+    public function deleteSources(Sources $sources): bool
+    {
+        $req = "DELETE FROM sources WHERE idprojet = ?";
+        $stmt = $this->_db->prepare($req);
+        return $stmt->execute(array($sources->idProjet()));
+    }
 }
 

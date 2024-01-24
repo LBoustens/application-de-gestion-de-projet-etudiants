@@ -55,5 +55,12 @@ class TagsManager
 		}
 		return $tag;
 	}
+
+    public function deleteTags()
+    {
+        $req = "DELETE FROM tags WHERE idtags NOT IN (SELECT idtags FROM associer)";
+        $stmt = $this->_db->prepare($req);
+        return $stmt->execute();
+    }
 }
 

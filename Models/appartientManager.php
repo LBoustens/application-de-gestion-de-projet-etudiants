@@ -29,4 +29,15 @@ class AppartientManager
         return $res;
     }
 
+    /**
+     * suppression d'appartient dans la base de données
+     * @param Participer
+     * @return boolean true si suppression, false sinon
+     */
+    public function deleteAppartient(Appartient $liaisoncate): bool
+    {
+        $req = "DELETE FROM appartient WHERE idprojet = ?";
+        $stmt = $this->_db->prepare($req);
+        return $stmt->execute(array($liaisoncate->idProjet()));
+    }
 }

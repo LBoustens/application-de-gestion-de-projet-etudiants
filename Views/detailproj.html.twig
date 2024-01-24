@@ -2,63 +2,32 @@
 
 {% block section %}
 
-	<div class="container">
-		<h1 class="text-center">
+
+		<h1 class="text-center pb-3">
 		{{projs.titre}}
 			</h1>
 		<p class="px-2 px-md-5 mx-2 mx-md-5 text-center mb-3">
 			{{projs.descproj}}
 		</p>
 		<!-- Détails du projet -->
-		<div class="row ">
-			<div
-				class="col-md-8 mx-auto text-center">
-				<!-- Titre du projet centré -->
-				<h1 class="text-center"></h1>
-
-				<!-- Description centrée -->
-				<p class="text-center"></p>
-
+		<div class="row">
+			<div class="col-md-10 mx-auto text-center">
 				<!-- Deux div en row -->
-				<div
-					class="row">
+				<div class="row ">
 					<!-- Div de gauche -->
 					<div class="col-md-6">
-						<p>
-							<strong>Catégorie :{% for detailcate in detailcates %}
-									{{detailcate.nomcate}}
-								{% endfor %}</strong>
-						</p>
-						<p>
-							<strong>Tags :
-								{% for detailtag in detailtags %}
-									{{detailtag.nomtag}}
-								{% endfor %}
-							</strong>
-						</p>
-						<p>
-							<strong>Créateur(s) :</strong>{% for detailuti in detailutis %}
-								{{detailuti.prenom}} {{detailuti.nom}}
-							{% endfor %}
-						</p>
-						<p>
-							<strong>Contexte :{% for detailcont in detailconts %}
-									{{detailcont.identifiant}} - {{detailcont.semestre}} - {{detailcont.intitule}}
-								{% endfor %}</strong>
-						</p>
-						<p> <strong>Lien de la démo : </strong>
-								<a href="{{projs.liendemo}}">{{projs.liendemo}}</a></p>
-						<p> <strong>Lien des sources : </strong> {% for detailsource in detailsources %}
-						<a href="{{detailsource.url}}">{{detailsource.url}}</a>
-						{% endfor %}</p>
-
+						<p><strong>Catégorie : </strong> {% for detailcate in detailcates %}{{detailcate.nomcate}}{% endfor %}</p>
+						<p><strong>Tags : </strong>{% for detailtag in detailtags %} {{detailtag.nomtag}} {% endfor %}</p>
+						<p><strong>Créateur(s) :</strong>{% for detailuti in detailutis %} {{detailuti.prenom}} {{detailuti.nom}}{% endfor %}</p>
+						<p><strong>Contexte : </strong>{% for detailcont in detailconts %}{{detailcont.identifiant}} - {{detailcont.semestre}} - {{detailcont.intitule}}{% endfor %}</p>
+						<p><strong>Lien de la démo : </strong><a href="{{projs.liendemo}}">{{projs.liendemo}}</a></p>
+						<p> <strong>Lien des sources : </strong> {% for detailsource in detailsources %}<a href="{{detailsource.url}}">{{detailsource.url}}</a>{% endfor %}</p>
 					</div>
-
 					<!-- Div de droite avec l'image de représentation -->
-					<div class="col-md-6 text-center">
+					<div class="col-md-4 text-center">
 						<img src="img/{{projs.image}}" alt="Image de représentation du projet" class="img-fluid">
-						<p class="mt-3 align-self-end">
-							<strong>Année de création : {{projs.anneecrea}}</strong>
+						<p class="mt-3 text-end">
+							<strong>Année de création :</strong> {{projs.anneecrea}}
 						</p>
 					</div>
 				</div>
@@ -69,5 +38,22 @@
 				</div>
 			</div>
 		</div>
+
+	<div class="container mt-5">
+		<h2>Commentaires</h2>
+
+		<!-- Affichage des commentaires -->
+		<div id="comment-list">
+			<?php include 'load_comments.php'; ?>
+		</div>
+
+		<!-- Formulaire d'ajout de commentaire -->
+		<form action="index.php" method="post" class="mt-3">
+			<div class="form-group">
+				<label for="commentaire">Ajouter un commentaire :</label>
+				<textarea class="form-control" id="commentaire" name="commentaire" rows="3" required></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary">Ajouter</button>
+		</form>
 	</div>
 {% endblock %}

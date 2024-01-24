@@ -69,17 +69,41 @@ class UtilisateurController
 	* @param Utilisateur à ajouter
 	* @return int true si l'ajout a bien eu lieu, false sinon
 	*/
-	public function ajoutUtilisateur() {
-		$utilisateur= new Utilisateur($_POST);
-		$ok = $this->utilisateurManager->add($utilisateur);
-		$message = $ok ? "Votre compte à été crée" : "probleme lors de l'ajout";
-		echo $this->twig->render('utilisateur_connexion.html.twig',array('message'=>$message,'acces'=> $_SESSION['acces'])); 
+    public function ajoutUtilisateur()
+    {
+        //fait avec chatgpt
+        $email = $_POST['email'];
 
-	}
+        // Vérifiez si l'e-mail se termine par "iut-tlse3.fr"
+        if (strpos($email, 'iut-tlse3.fr') === false) {
+            $message = "L'adresse e-mail doit se terminer par iut-tlse3.fr";
+            echo $this->twig->render('inscription.html.twig', array('message' => $message, 'acces' => $_SESSION['acces']));
+        } else {
+
+            // fait par moi
+            // Créez un objet Utilisateur avec les données du formulaire
+            $utilisateur = new Utilisateur($_POST);
+
+            // Ajoutez l'utilisateur en base de données
+            $ok = $this->utilisateurManager->add($utilisateur);
+
+            // Générez un message en fonction du succès ou de l'échec de l'ajout
+            $message = $ok ? "Votre compte a été créé" : "Problème lors de l'ajout";
+
+            // Affichez le message approprié dans le template
+            echo $this->twig->render('utilisateur_connexion.html.twig', array('message' => $message, 'acces' => $_SESSION['acces']));
+        }
+
+    }
+
+    public function  infoprofil($idutilisateur)
+    {
+        $utis = $this->utilisateurManager->getUtiConnecte($idutilisateur);
+        echo $this->twig->render('infoprofil.html.twig', array('utis' => $utis, 'acces' => $_SESSION['acces']));
+    }
 
 
-
-	public function profil()
+    public function profil()
 	{
 		echo $this->twig->render('profil.html.twig', array('acces' => $_SESSION['acces']));
 	}

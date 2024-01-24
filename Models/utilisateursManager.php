@@ -78,6 +78,23 @@ class UtilisateurManager
 		return $res;
 	}
 
+    public function getUtiConnecte(int $idutilisateur)
+    {
+        $utis = array();
+        $req = "SELECT idutilisateur,nom,prenom,identifiantiut,email,mdp,photodeprofil FROM utilisateur WHERE idutilisateur=?";
+        $stmt = $this->_db->prepare($req);
+        $stmt->execute(array($idutilisateur));
+        // pour debuguer les requêtes SQL
+        $errorInfo = $stmt->errorInfo();
+        if ($errorInfo[0] != 0) {
+            print_r($errorInfo);
+        }
+        // recup des données
+        while ($donnees = $stmt->fetch()) {
+            $utis[] = new Utilisateur($donnees);
+        }
+        return $utis;
+    }
 
 
 

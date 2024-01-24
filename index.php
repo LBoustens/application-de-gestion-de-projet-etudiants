@@ -25,7 +25,6 @@ $appartientController = new AppartientController($bdd, $twig);
 $associerController = new AssocierController($bdd, $twig);
 $participerController = new ParticiperController($bdd, $twig);
 
-
 // texte du message
 $message = "";
 
@@ -39,12 +38,10 @@ if (!isset($_SESSION['acces'])) {
 if (isset($_POST["connexion"])) {
   $message = $utiController->utilisateurConnexion($_POST);
 }
-
 // deconnexion : click sur le bouton deconnexion
 if (isset($_GET["action"]) && $_GET['action'] == "logout") {
   $message = $utiController->utilisateurDeconnexion();
 }
-
 // formulaire de connexion
 if (isset($_GET["action"]) && $_GET["action"] == "login") {
   $utiController->utilisateurFormulaire();
@@ -57,125 +54,90 @@ if (!isset($_GET["action"]) && empty($_POST)) {
   echo $twig->render('accueil.html.twig', array('acces' => $_SESSION['acces']));
 }
 
-// ============================== gestion des itineraires ==================
+// ============================== gestion des Projets ==================
 
-// liste des itinéraires dans un tableau HTML
-//  https://.../index/php?action=liste
+// liste des projets
 if (isset($_GET["action"]) && $_GET["action"] == "projets") {
   $projController->listeProjets();
-  // $contController->listeContexte();
 }
-// liste de mes itinéraires dans un tableau HTML
+// liste des projets de l'utilisateur connecté
 if (isset($_GET["action"]) && $_GET["action"] == "mesprojets") {
   $projController->listeMesProjets($_SESSION['idutilisateur']);
 }
-
-// formulaire ajout d'un itineraire : saisie des caractéristiques à ajouter dans la BD
-//  https://.../index/php?action=ajout
-// version 0 : l'itineraire est rattaché automatiquement à un membre déjà présent dans la BD
-//              l'idmembre est en champ caché dans le formulaire
+// formulaire ajout d'un projet
 if (isset($_GET["action"]) && $_GET["action"] == "ajout") {
   $projController->formAjoutProjet();
 }
-
-// ajout de l'itineraire dans la base
-// --> au clic sur le bouton "valider_ajout" du form précédent
-if (isset($_POST["valider_ajout"])) {
-  $projController->ajoutProjet();
-}
-
-
-// suppression d'un itineraire : choix de l'itineraire
-//  https://.../index/php?action=suppr
+// suppression d'un projet : choix du projet
 if (isset($_GET["action"]) && $_GET["action"] == "suppr") {
   $projController->choixSuppProjet($_SESSION['idutilisateur']);
 }
-
-// supression d'un itineraire dans la base
-// --> au clic sur le bouton "valider_supp" du form précédent
+// supression d'un projet dans la base
 if (isset($_POST["valider_supp"])) {
   $projController->suppProjet();
 }
-
-// modification d'un itineraire : choix de l'itineraire
-//  https://.../index/php?action=modif
+// modification d'un projet : choix du projet
 if (isset($_GET["action"]) && $_GET["action"] == "modif") {
   $projController->choixModProjet($_SESSION['idutilisateur']);
 }
-
-// modification d'un itineraire : saisie des nouvelles valeurs
-// --> au clic sur le bouton "saisie modif" du form précédent
-//  ==> version 0 : pas modif de l'iditi ni de l'idmembre
+// modification d'un projet : saisie des nouvelles valeurs
 if (isset($_POST["saisie_modif"])) {
   $projController->saisieModProjet();
 }
-
-//modification d'un itineraire : enregistrement dans la bd
-// --> au clic sur le bouton "valider_modif" du form précédent
+//modification d'un projet : enregistrement dans la bd
 if (isset($_POST["valider_modif"])) {
   $projController->modProjet();
 }
-
 // ajout de l'utilisateur dans la base
-// --> au clic sur le bouton "inscription" du form précédent
 if (isset($_POST["inscription"])) {
   $utiController->ajoutUtilisateur();
 }
-
 // ajout du projet dans la base
-// --> au clic sur le bouton "inscription" du form précédent
 if (isset($_POST["ajouter_proj"])) {
   $projController->ajoutProjet();
 }
-// recherche d'itineraire : saisie des critres de recherche dans un formulaire
-//  https://.../index/php?action=recherc
-// if (isset($_GET["action"]) && $_GET["action"] == "recher") {
-//   $itiController->formRechercheItineraire();
-// }
-
-//  recherche des itineraires : construction de la requete SQL en fonction des critères 
-// de recherche et affichage du résultat dans un tableau HTML 
-// --> au clic sur le bouton "valider_recher" du form précédent
-// if (isset($_POST["valider_recher"])) {
-//   $itiController->rechercheItineraire();
-// }
-
+//  recherche des itineraires : construction de la requete SQL en fonction des critères
+// --> au clic sur le bouton "valider_recher" du form
+if (isset($_POST["valider_recher"])) {
+   $projController->rechercheProjet();
+ }
+// Page des détails d'un projet
 if (isset($_GET["action"]) && $_GET["action"] == "details") {
   $details = $projController->detailsProjet();
 }
-
 // Page d'accueil de l'app
 if (isset($_GET["action"]) && $_GET["action"] == "accueil") {
   $projController->accueil();
 }
-
 // Formulaire d'inscription
 if (isset($_GET["action"]) && $_GET["action"] == "inscription") {
   $projController->inscription();
 }
-
 // Page de contact
 if (isset($_GET["action"]) && $_GET["action"] == "contact") {
   $projController->contact();
 }
-
 // form éditer profil
 if (isset($_GET["action"]) && $_GET["action"] == "profil") {
   $utiController->profil();
 }
-
+// Page d'info d'un utilisateur
+if (isset($_GET["action"]) && $_GET["action"] == "infoprofil") {
+    $utiController->infoprofil($_SESSION['idutilisateur']);
+}
+// Page de mentions légales
 if (isset($_GET["action"]) && $_GET["action"] == "mentions") {
   $projController->mentions();
 }
-
+// Page de politique de confidentialité
 if (isset($_GET["action"]) && $_GET["action"] == "politique") {
   $projController->politique();
 }
-
+// Page utilisateur de l'admin
 if (isset($_GET["action"]) && $_GET["action"] == "utiadmin") {
   $utiController->utiadmin();
 }
-
+// Page categorie de l'admin
 if (isset($_GET["action"]) && $_GET["action"] == "cateadmin") {
   $utiController->cateadmin();
 }

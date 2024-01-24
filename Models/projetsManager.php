@@ -59,7 +59,7 @@ class ProjetManager
 	 */
 	public function delete(Projet $proj): bool
 	{
-		$req = "DELETE FROM projet NATURAL JOIN participer WHERE idprojet = ?";
+		$req = "DELETE FROM projet WHERE idprojet = ?";
 		$stmt = $this->_db->prepare($req);
 		return $stmt->execute(array($proj->idProjet()));
 	}
@@ -106,8 +106,8 @@ class ProjetManager
 	}
 
 	/**
-	 * retourne l'ensemble des Projets présents dans la BD pour un membre
-	 * @param int idmembre
+	 * retourne l'ensemble des Projets présents dans la BD pour un utilisateur
+	 * @param int idutilisateur
 	 * @return Projet[]
 	 */
 	public function getListUtilisateur(int $idutilisateur)
@@ -146,45 +146,39 @@ class ProjetManager
     }
 	/**
 	 * méthode de recherche d'un Projet dans la BD à partir des critères passés en paramètre
-	 * @param string $lieudepart
-	 * @param string $lieudepart
-	 * @param string $datedepart
-	 * @return Itineraire[]
+	 * @param string $titre
+	 * @param string $descproj
+	 * @return Projet[]
 	 */
-	// public function search(string $lieudepart, string $lieuarrivee, string $datedepart) {
-	// 	$req = "SELECT iditi,lieudepart,lieuarrivee,heuredepart,date_format(datedepart,'%d/%c/%Y')as datedepart,tarif,nbplaces,bagagesautorises,details FROM itineraire";
-	// 	$cond = '';
+    public function searchProj(string $titre, string $descproj) {
+        $req = "SELECT idprojet,titre,descproj,image,liendemo,idcontexte,anneecrea FROM projet";
+        $cond = '';
 
-	// 	if ($lieudepart<>"")
-	// 	{ 	$cond = $cond . " lieudepart like '%". $lieudepart ."%'";
-	// 	}
-	// 	if ($lieuarrivee<>"")
-	// 	{ 	if ($cond<>"") $cond .= " AND ";
-	// 		$cond = $cond . " lieuarrivee like '%" . $lieuarrivee ."%'";
-	// 	}
-	// 	if ($datedepart<>"")
-	// 	{ 	if ($cond<>"") $cond .= " AND ";
-	// 		$cond = $cond . " datedepart = '" . dateChgmtFormat($datedepart) . "'";
-	// 	}
-	// 	if ($cond <>"")
-	// 	{ 	$req .= " WHERE " . $cond;
-	// 	}
-	// 	// execution de la requete
-	// 	$stmt = $this->_db->prepare($req);
-	// 	$stmt->execute();
-	// 	// pour debuguer les requêtes SQL
-	// 	$errorInfo = $stmt->errorInfo();
-	// 	if ($errorInfo[0] != 0) {
-	// 		print_r($errorInfo);
-	// 	}
-	// 	$itineraires = array();
-	// 	while ($donnees = $stmt->fetch())
-	// 	{
-	// 		$itineraires[] = new Itineraire($donnees);
-	// 	}
-	// 	return $itineraires;
-	// }
-
+        if ($titre<>"")
+        { 	$cond = $cond . " titre like '%". $titre ."%'";
+        }
+        if ($descproj<>"")
+        { 	if ($cond<>"") $cond .= " AND ";
+            $cond = $cond . " descproj like '%" . $descproj ."%'";
+        }
+        if ($cond <>"")
+        { 	$req .= " WHERE " . $cond;
+        }
+        // execution de la requete
+        $stmt = $this->_db->prepare($req);
+        $stmt->execute();
+        // pour debuguer les requêtes SQL
+        $errorInfo = $stmt->errorInfo();
+        if ($errorInfo[0] != 0) {
+            print_r($errorInfo);
+        }
+        $projets = array();
+        while ($donnees = $stmt->fetch())
+        {
+            $projets[] = new Projet($donnees);
+        }
+        return $projets;
+    }
 	/**
 	 * modification d'un Projet dans la BD
 	 * @param Projet
