@@ -15,6 +15,7 @@ include "Controllers/tagsController.php";
 include "Controllers/appartientController.php";
 include "Controllers/associerController.php";
 include "Controllers/participerController.php";
+include "Controllers/commentaireController.php";
 $projController = new ProjetController($bdd, $twig);
 $utiController = new UtilisateurController($bdd, $twig);
 $contController = new ContexteController($bdd, $twig);
@@ -24,6 +25,7 @@ $tagsController = new TagsController($bdd, $twig);
 $appartientController = new AppartientController($bdd, $twig);
 $associerController = new AssocierController($bdd, $twig);
 $participerController = new ParticiperController($bdd, $twig);
+$commentaireController = new CommentaireController($bdd, $twig);
 
 // texte du message
 $message = "";
@@ -103,7 +105,7 @@ if (isset($_POST["valider_recher"])) {
  }
 // Page des détails d'un projet
 if (isset($_GET["action"]) && $_GET["action"] == "details") {
-  $details = $projController->detailsProjet();
+  $projController->detailsProjet();
 }
 // Page d'accueil de l'app
 if (isset($_GET["action"]) && $_GET["action"] == "accueil") {
@@ -120,6 +122,10 @@ if (isset($_GET["action"]) && $_GET["action"] == "contact") {
 // form éditer profil
 if (isset($_GET["action"]) && $_GET["action"] == "profil") {
   $utiController->profil();
+}
+// Envoie d'un commentaire dans la base
+if (isset($_POST["ajouter_comment"])) {
+    $commentaireController->addComment();
 }
 // Page d'info d'un utilisateur
 if (isset($_GET["action"]) && $_GET["action"] == "infoprofil") {

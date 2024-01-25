@@ -29,8 +29,8 @@ class ProjetManager
 		$proj->setIdProjet($stmt->fetchColumn() + 1);
 
 		// requete d'ajout dans la BD
-		$req2 = "INSERT INTO projet (idprojet,titre,descproj,image,liendemo,idcontexte,anneecrea) VALUES (?,?,?,?,?,?,?)";
-		$stmt = $this->_db->prepare($req2);
+		$req = "INSERT INTO projet (idprojet,titre,descproj,image,liendemo,idcontexte,anneecrea) VALUES (?,?,?,?,?,?,?)";
+		$stmt = $this->_db->prepare($req);
 		$res = $stmt->execute(array($proj->idProjet(), $proj->titre(), $proj->descProj(), $proj->image(), $proj->lienDemo(), $proj->idContexte(), $proj->anneeCrea()));
 		// pour debuguer les requêtes SQL
 		$errorInfo = $stmt->errorInfo();

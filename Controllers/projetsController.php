@@ -14,6 +14,7 @@ class ProjetController
 	private $appartientManager;
 	private $associerManager;
 	private $participerManager;
+    private $commentManager;
 	private $twig;
 
 	// Constructeur = initialisation de la connexion vers le SGBD
@@ -28,6 +29,7 @@ class ProjetController
 		$this->appartientManager = new AppartientManager($db);
 		$this->associerManager = new AssocierManager($db);
 		$this->participerManager = new ParticiperManager($db);
+        $this->commentManager = new CommentaireManager($db);
 		$this->twig = $twig;
 	}
 
@@ -47,7 +49,8 @@ class ProjetController
 		$detailcates = $this->cateManager->getdetailsCate($_POST["idprojet"]);
 		$detailtags = $this->tagsManager->getTag($_POST["idprojet"]);
 		$detailutis = $this->utiManager->getDetailsUtilisateur($_POST["idprojet"]);
-		echo $this->twig->render('detailproj.html.twig', array('projs' => $projs, 'detailutis' => $detailutis, 'detailtags' => $detailtags, 'detailcates' => $detailcates, 'detailconts' => $detailconts , 'detailsources' => $detailsources, 'acces' => $_SESSION['acces']));
+        $comments = $this->commentManager->getListComment($_POST["idprojet"]);
+		echo $this->twig->render('detailproj.html.twig', array('projs' => $projs, 'detailutis' => $detailutis, 'detailtags' => $detailtags, 'detailcates' => $detailcates, 'detailconts' => $detailconts , 'detailsources' => $detailsources, 'comments' => $comments, 'acces' => $_SESSION['acces'], 'idutilisateur' => $_SESSION['idutilisateur']));
 	}
 
 	// liste des projets de l'utilisateur connecté
@@ -202,7 +205,7 @@ class ProjetController
             $message = "Problème lors de la suppression du projet";
         }
 
-		echo $this->twig->render('index.html.twig', array('message' => $message, 'acces' => $_SESSION['acces']));
+		echo $this->twig->render('mesprojets.html.twig', array('message' => $message, 'acces' => $_SESSION['acces']));
 	}
 	/**
 	 * form de choix du projet à modifier
