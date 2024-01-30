@@ -166,7 +166,7 @@ class UtilisateurController
     {
         $uti = new Utilisateur($_POST);
         $message = "";
-
+        $email = $_POST['email'];
         // Vérifie si le fichier a été modifié
         if ($_FILES["photodeprofil"]["size"] > 0) {
             $targetDirectory = "photodeprofil/";
@@ -208,13 +208,21 @@ class UtilisateurController
             $uti->setPhotoDeProfil($utiExistant->photoDeProfil());
         }
 
+        // Vérifie si l'e-mail se termine par "iut-tlse3.fr"
+        if (strpos($email, 'iut-tlse3.fr') === false) {
+            $message = "L'adresse e-mail doit se terminer par iut-tlse3.fr";
+            $utis = $this->utilisateurManager->getUtiConnecte($idutilisateur);
+            $_SESSION['photodeprofil'] = $utis->photoDeProfil();
+            echo $this->twig->render('modifprofil.html.twig', array('utis' => $utis, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+        }
+        else{
         $okUti = $this->utilisateurManager->updateUtilisateur($uti);
         $utis = $this->utilisateurManager->getUtiConnecte($idutilisateur);
         $_SESSION['photodeprofil'] = $utis->photoDeProfil();
 
         // Vérifie s'il y a eu au moins une modification
         if ($okUti > 0) {
-            $message .= "Projet modifié avec succès ";
+            $message .= "Profil modifié avec succès ";
         } else {
             $message .= "Aucune modification n'a été effectuée";
         }
@@ -222,7 +230,7 @@ class UtilisateurController
         if ($message != "") {
             echo $this->twig->render('infoprofil.html.twig', array('utis' => $utis, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
         }
-    }
+    }}
 
     /**  page gestion utilisateur
      * @return void
