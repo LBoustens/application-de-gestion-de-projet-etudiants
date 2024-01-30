@@ -135,7 +135,6 @@ class UtilisateurManager
             . "prenom = :prenom, "
             . "identifiantiut = :identifiantiut, "
             . "email  = :email, "
-            . "mdp  = :mdp, "
             . "photodeprofil  = :photodeprofil "
             . " WHERE idutilisateur= :idutilisateur";
 
@@ -146,7 +145,6 @@ class UtilisateurManager
                 ":prenom" => $uti->prenom(),
                 ":identifiantiut" => $uti->identifiantIut(),
                 ":email" => $uti->email(),
-                ":mdp" => $uti->mdp(),
                 ":photodeprofil" => $uti->photoDeProfil(),
                 ":idutilisateur" => $uti->idUtilisateur()
             )

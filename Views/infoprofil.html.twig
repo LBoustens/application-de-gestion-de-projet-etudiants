@@ -8,28 +8,21 @@
             {{utis.prenom}} {{utis.nom}}
         </h1>
         <!-- Info du profil -->
-        <div class="row ">
-            <div class="col-md-8 mx-auto text-center">
+            <div class="col-md-8 mx-auto text-center ">
                 <!-- Deux div en row -->
-                <div class="row">
+                <div class="row d-flex justify-content-center">
                     <!-- Div de gauche -->
-                    <div class="col-md-6">
+                    <div class="col-md-6 d-flex flex-column justify-content-center">
                         <p>
                             <strong>Identifiant IUT :</strong> {{utis.identifiantiut}}
                         </p>
                         <p>
                             <strong>Email :</strong> {{utis.email}}
                         </p>
-                        <!-- Mot de passe -->
-                        <p>
-                            <strong>Mot De Passe :</strong>
-                            <!-- Utilisez un champ de texte masqué par défaut -->
-                            <input type="password" id="maskedPassword" value="{{ utis.mdp }}">
-                        </p>
                     </div>
 
                     <!-- Div de droite avec l'image de représentation -->
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-4 text-center">
                         <img src="photodeprofil/{{utis.photodeprofil}}" alt="photo de profil de l'utilisateur " class="img-fluid rounded-circle w-50 ">
                     </div>
                 </div>
@@ -40,7 +33,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
 
     <script src="profil.js" defer></script>
 {% endblock %}

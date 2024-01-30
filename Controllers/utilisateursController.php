@@ -170,8 +170,6 @@ class UtilisateurController
      */
     public function updateProfil(int $idutilisateur)
     {
-
-        var_dump($_POST);
         $uti = new Utilisateur($_POST);
         $message = "";
 
@@ -221,6 +219,7 @@ class UtilisateurController
 
         $okUti = $this->utilisateurManager->updateUtilisateur($uti);
         $utis = $this->utilisateurManager->getUtiConnecte($idutilisateur);
+        $_SESSION['photodeprofil'] = $utis->photoDeProfil();
 
         // Vérifie s'il y a eu au moins une modification
         if ($okUti > 0 ) {
