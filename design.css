@@ -23,11 +23,14 @@ legend {
 	font-size: 1.2rem;
 }
 
-#logo{
+#LogoMMIfoot{
 	width: 30px;
 	height: 30px;
 }
-
+#logoMMI{
+	width: 30px;
+	height: 30px;
+}
 #profil{
 	width: 50px;
 	height: 50px;
