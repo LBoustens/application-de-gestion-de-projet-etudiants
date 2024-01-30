@@ -10,7 +10,7 @@ class Utilisateur
 	private string $_identifiantiut;
 	private string $_email;
 	private string $_password;
-	private int $_photoprofil;
+	private string $_photodeprofil;
 	private int $_statut;
 
 	// contructeur
@@ -35,8 +35,8 @@ class Utilisateur
 		if (isset($donnees['mdp'])) {
 			$this->_password = $donnees['mdp'];
 		}
-		if (isset($donnees['photoprofil'])) {
-			$this->_photoprofil = $donnees['photoprofil'];
+		if (isset($donnees['photodeprofil'])) {
+			$this->_photodeprofil = $donnees['photodeprofil'];
 		}
 		if (isset($donnees['statut'])) {
 			$this->_statut = $donnees['statut'];
@@ -67,9 +67,9 @@ class Utilisateur
 	{
 		return $this->_password;
 	}
-	public function photoProfil()
+	public function photoDeProfil()
 	{
-		return $this->_photoprofil;
+		return $this->_photodeprofil;
 	}
 	public function statutAdmin()
 	{
@@ -102,9 +102,9 @@ class Utilisateur
 	{
 		$this->_password = $password;
 	}
-	public function setPhotoProfil(string $photoprofil)
+	public function setPhotoDeProfil(string $photodeprofil): void
 	{
-		$this->_photoprofil = $photoprofil;
+		$this->_photodeprofil = $photodeprofil;
 	}
 	public function setStatutAdmin(int $statut)
 	{

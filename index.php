@@ -16,6 +16,7 @@ include "Controllers/appartientController.php";
 include "Controllers/associerController.php";
 include "Controllers/participerController.php";
 include "Controllers/commentaireController.php";
+include "Controllers/notationController.php";
 $projController = new ProjetController($bdd, $twig);
 $utiController = new UtilisateurController($bdd, $twig);
 $contController = new ContexteController($bdd, $twig);
@@ -26,15 +27,26 @@ $appartientController = new AppartientController($bdd, $twig);
 $associerController = new AssocierController($bdd, $twig);
 $participerController = new ParticiperController($bdd, $twig);
 $commentaireController = new CommentaireController($bdd, $twig);
+$notationController = new NotationController($bdd, $twig);
 
 // texte du message
 $message = "";
 
 // ============================== connexion / deconnexion - sessions ==================
 
-// si la variable de session n'existe pas, on la crée
+// si les variables de session n'existe pas, on les crées
 if (!isset($_SESSION['acces'])) {
   $_SESSION['acces'] = "non";
+}
+if (!isset($_SESSION['admin'])) {
+    $_SESSION['admin'] = "non";
+
+}if (!isset($_SESSION['photodeprofil'])) {
+    $_SESSION['photodeprofil'] = NULL;
+}
+
+if (!isset($_SESSION['idutilisateur'])) {
+    $_SESSION['idutilisateur'] = NULL;
 }
 // click sur le bouton connexion
 if (isset($_POST["connexion"])) {
@@ -76,7 +88,7 @@ if (isset($_GET["action"]) && $_GET["action"] == "suppr") {
 }
 // supression d'un projet dans la base
 if (isset($_POST["valider_supp"])) {
-  $projController->suppProjet();
+  $projController->suppProjet($_SESSION['idutilisateur']);
 }
 // modification d'un projet : choix du projet
 if (isset($_GET["action"]) && $_GET["action"] == "modif") {
@@ -88,7 +100,7 @@ if (isset($_POST["saisie_modif"])) {
 }
 //modification d'un projet : enregistrement dans la bd
 if (isset($_POST["valider_modif"])) {
-  $projController->modProjet();
+  $projController->modProjet($_SESSION['idutilisateur']);
 }
 // ajout de l'utilisateur dans la base
 if (isset($_POST["inscription"])) {
@@ -96,7 +108,7 @@ if (isset($_POST["inscription"])) {
 }
 // ajout du projet dans la base
 if (isset($_POST["ajouter_proj"])) {
-  $projController->ajoutProjet();
+  $projController->ajoutProjet($_SESSION['idutilisateur']);
 }
 //  recherche des itineraires : construction de la requete SQL en fonction des critères
 // --> au clic sur le bouton "valider_recher" du form
@@ -119,17 +131,25 @@ if (isset($_GET["action"]) && $_GET["action"] == "inscription") {
 if (isset($_GET["action"]) && $_GET["action"] == "contact") {
   $projController->contact();
 }
+// Page d'info d'un utilisateur
+if (isset($_GET["action"]) && $_GET["action"] == "infoprofil") {
+    $utiController->infoprofil($_SESSION['idutilisateur']);
+}
 // form éditer profil
 if (isset($_GET["action"]) && $_GET["action"] == "profil") {
-  $utiController->profil();
+  $utiController->profil($_SESSION['idutilisateur']);
+}
+//modification d'un projet : enregistrement dans la bd
+if (isset($_POST["valider_modifuti"])) {
+    $utiController->updateProfil($_SESSION['idutilisateur']);
 }
 // Envoie d'un commentaire dans la base
 if (isset($_POST["ajouter_comment"])) {
     $commentaireController->addComment();
 }
-// Page d'info d'un utilisateur
-if (isset($_GET["action"]) && $_GET["action"] == "infoprofil") {
-    $utiController->infoprofil($_SESSION['idutilisateur']);
+// Envoie d'une note dans la base
+if (isset($_POST["ajouter_note"])) {
+    $notationController->addNote();
 }
 // Page de mentions légales
 if (isset($_GET["action"]) && $_GET["action"] == "mentions") {
@@ -143,13 +163,37 @@ if (isset($_GET["action"]) && $_GET["action"] == "politique") {
 if (isset($_GET["action"]) && $_GET["action"] == "utiadmin") {
   $utiController->utiadmin();
 }
+// Supression d'un utilisateur dans la base
+if (isset($_POST["supp_uti"])) {
+    $utiController->suppUtiAdmin();
+}
+// Ajout d' utilisateur dans la base
+if (isset($_POST["ajout_uti"])) {
+    $utiController->addUtiAdmin();
+}
 // Page categorie de l'admin
 if (isset($_GET["action"]) && $_GET["action"] == "cateadmin") {
-  $utiController->cateadmin();
+  $cateController->cateadmin();
 }
-
-if (isset($_GET["action"]) && $_GET["action"] == "verifprojet") {
-  $utiController->verifprojet();
+// Supression d'une categorie dans la base
+if (isset($_POST["cate_supp"])) {
+    $cateController->suppCateAdmin();
+}
+// Ajout d'une categorie dans la base
+if (isset($_POST["ajouter_cate"])) {
+    $cateController->addCateAdmin();
+}
+// Page contexte de l'admin
+if (isset($_GET["action"]) && $_GET["action"] == "contadmin") {
+  $contController->contAdmin();
+}
+// Suppression d'un contexte dans la base
+if (isset($_POST["cont_supp"])) {
+    $contController->suppContAdmin();
+}
+// Ajout d'un contexte dans la base
+if (isset($_POST["ajouter_cont"])) {
+    $contController->addContAdmin();
 }
 
 

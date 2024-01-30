@@ -6,7 +6,7 @@
 <fieldset><legend class="pb-3">Choix du projet à modifier</legend>
     <select name="idprojet" class="form-control form-control-sm mb-3">
     {% for proj in projets %}
-      <option value="{{proj.idprojet}}">{{proj.titre}} - {{proj.descriptionproj}} - {{proj.liendemo}} - {{proj.idcontexte}}</option>
+      <option value="{{proj.idprojet}}">{{proj.titre}} - {{proj.descproj}} - {{proj.liendemo}} - {{proj.idcontexte}}</option>
     {% endfor %}
     </select>
     <button type="submit" name="saisie_modif"  class="btn btn-primary">Valider</button>

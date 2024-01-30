@@ -57,5 +57,19 @@ public function ajouterCommentaire(Commentaire $comment)
 
         return $comments;
     }
+    /**
+     * suppression d'une Participation dans la base de données
+     * @param Commentaire
+     * @return boolean true si suppression, false sinon
+     */
+    public function deleteComment(Commentaire $comment): bool
+    {
+        $req = "DELETE FROM commentaire WHERE idprojet = ?";
+        $stmt = $this->_db->prepare($req);
+        return $stmt->execute(array($comment->idProjet()));
+    }
+
+
 }
+
 ?>

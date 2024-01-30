@@ -44,4 +44,11 @@ class ParticiperManager
         $stmt = $this->_db->prepare($req);
         return $stmt->execute(array($parti->idProjet()));
     }
+
+    public function deleteParticiperAdmin(Participer $liaisonuti): bool
+    {
+        $req = "DELETE FROM participer WHERE idutilisateur = ?";
+        $stmt = $this->_db->prepare($req);
+        return $stmt->execute(array($liaisonuti->idUtilisateur()));
+    }
 }

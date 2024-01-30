@@ -65,7 +65,7 @@ class ProjetManager
 	}
 
 	/**
-	 * echerche dans la BD d'un Projet à partir de son id
+	 * recherche dans la BD d'un Projet à partir de son id
 	 * @param int $iditi
 	 * @return Projet
 	 */
@@ -190,8 +190,9 @@ class ProjetManager
 			. "descproj = :descproj, "
 			. "image = :image, "
 			. "liendemo  = :liendemo, "
+            . "idcontexte  = :idcontexte, "
+            . "anneecrea  = :anneecrea "
 			. " WHERE idprojet= :idprojet";
-		//var_dump($iti);
 
 		$stmt = $this->_db->prepare($req);
 		$stmt->execute(
@@ -200,10 +201,13 @@ class ProjetManager
 				":descproj" => $proj->descProj(),
 				":image" => $proj->image(),
 				":liendemo" => $proj->lienDemo(),
+                ":idcontexte" => $proj->idContexte(),
+                ":anneecrea" => $proj->anneeCrea(),
 				":idprojet" => $proj->idProjet()
 			)
 		);
-		return $stmt->rowCount();
+        // Modifie la ligne suivante pour renvoyer true si au moins une ligne est mise à jour
+        return $stmt->rowCount() > 0;
 
 	}
 }

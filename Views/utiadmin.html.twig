@@ -1,84 +1,55 @@
 {% extends "index.html.twig" %}
 
     {% block section %}
-
-    <div class="container p-5">
-        <form method="post" action="index.php">
-            <fieldset><legend class="pb-3">Choix de l'utilisateur à modifier</legend>
-                <select name="idprojet" class="form-control form-control-sm mb-3">
-
-                </select>
-                <button type="submit" name="saisie_modif"  class="btn btn-primary">Valider</button>
-            </fieldset>
-        </form>
-    </div>
-
-    <div class="container">
-        <table class="table table-hover table-sm">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Supprimer un utilisateur</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <form id="details" method="post" action="index.php?action=details">
-                        <input type="hidden" id="*" name="*" value="1">
-                        <input type="submit" name="supp_uti" value="supprimer"></form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-
-        <div class="col-md-12 me-5">
-            <form>
-                <fieldset>
-                    <legend class="text-center">Ajouter un utilisateur</legend>
-
-                    <!-- Nom et Prénom -->
-
-                        <div class="mb-3">
-                            <label for="nom" class="form-label">Nom</label>
-                            <input type="text" class="form-control" id="nom" name="nom" placeholder="Votre nom" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="prenom" class="form-label">Prénom</label>
-                            <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Votre prénom" required>
-                        </div>
-                    <!-- E-mail -->
-                    <div class="mb-3">
-                        <label for="email" class="form-label">E-mail</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Votre adresse e-mail" required>
-                    </div>
-
-                    <!-- Identifiant IUT -->
-                    <div class="mb-3">
-                        <label for="identifiantIUT" class="form-label">Identifiant IUT</label>
-                        <input type="text" class="form-control" id="identifiantIUT" name="identifiantIUT" placeholder="Votre identifiant IUT" required>
-                    </div>
-
-                    <!-- Mot de passe -->
-                    <div class="mb-3">
-                        <label for="motDePasse" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" id="motDePasse" name="motDePasse" placeholder="Votre mot de passe" required>
-                    </div>
-
-                    <!-- Bouton Enregistrer les modifications -->
-                    <button type="submit" class="btn btn-primary btn-block">Enregistrer l'utilisateur</button>
-                </fieldset>
-            </form>
+<form action="index.php" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <legend class="text-center">Ajouter un utilisateur</legend>
+        <!-- Ajout des champs pour l'inscription -->
+        <div class="form-group mb-3">
+            <label for="prenom">Prénom <span class="text-warning">*</span></label>
+            <input type="text" class="form-control" id="prenom" name="prenom" required placeholder="Entrez votre prénom">
         </div>
 
+        <div class="form-group mb-3">
+            <label for="nom">Nom <span class="text-warning">*</span></label>
+            <input type="text" class="form-control" id="nom" name="nom" required placeholder="Entrez votre nom">
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="email">Email <span class="text-warning">*</span></label>
+            <input type="email" class="form-control" id="email" name="email" required placeholder="Entrez votre email">
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="identifiantiut">Identifiant IUT <span class="text-warning">*</span></label>
+            <input type="text" class="form-control" id="identifiantiut" name="identifiantiut" required placeholder="Entrez votre identifiant IUT">
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="mdp">Mot de passe <span class="text-warning">*</span></label>
+            <input type="password" class="form-control" id="mdp" name="mdp" required placeholder="Entrez votre mot de passe">
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="photodeprofil">Votre photo de profil </label>
+            <input type="file" class="form-control-file" id="photodeprofil" name="photodeprofil">
+        </div>
+
+        <button type="submit" name="ajout_uti" value="ajout_uti" class="btn btn-primary w-25 mb-5">Ajouter un Utilisateur</button>
+    </fieldset>
+</form>
+
+<form action="index.php" method="post">
+    <label for="idutilisateur" class="form-label">Supprimer un utilisateur</label>
+    <select class="form-select" id="idutilisateur" name="idutilisateur">
+        {% for uti in utis %}
+            <option value="{{ uti.idutilisateur }}">
+                {{ uti.prenom }} - {{ uti.nom }} - {{ uti.email }} - {{ uti.identifiantiut }}
+            </option>
+        {% endfor %}
+    </select>
+        <button type="submit" name="supp_uti" value="supp_uti" class="btn btn-primary mt-3">Supprimer l'utilisateur sélectionné</button>
+</form>
 
     {% endblock %}
 

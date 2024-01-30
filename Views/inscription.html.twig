@@ -7,19 +7,19 @@
             <img id="connex" src="img/LOGO_MMi.webp" class="img-fluid mb-4" alt="Header Image">
         </div>
 
-        <form action="index.php" method="post">
+        <form action="index.php" method="post" enctype="multipart/form-data">
             <fieldset>
                 <legend class="text-center">Inscription à un compte</legend>
 
                 <!-- Ajout des champs pour l'inscription -->
                 <div class="form-group mb-3">
-                    <label for="nom">Nom <span class="text-warning">*</span></label>
-                    <input type="text" class="form-control" id="nom" name="nom" required placeholder="Entrez votre nom">
+                    <label for="prenom">Prénom <span class="text-warning">*</span></label>
+                    <input type="text" class="form-control" id="prenom" name="prenom" required placeholder="Entrez votre prénom">
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="prenom">Prénom <span class="text-warning">*</span></label>
-                    <input type="text" class="form-control" id="prenom" name="prenom" required placeholder="Entrez votre prénom">
+                    <label for="nom">Nom <span class="text-warning">*</span></label>
+                    <input type="text" class="form-control" id="nom" name="nom" required placeholder="Entrez votre nom">
                 </div>
 
                 <div class="form-group mb-3">
@@ -37,9 +37,9 @@
                     <input type="password" class="form-control" id="mdp" name="mdp" required placeholder="Entrez votre mot de passe">
                 </div>
 
-                <div class="form-group form-check mb-3">
-                    <input type="checkbox" class="form-check-input" id="remember">
-                    <label class="form-check-label" for="remember">Rester connecté ?</label>
+                <div class="form-group mb-3">
+                    <label for="photodeprofil">Votre photo de profil </label>
+                    <input type="file" class="form-control-file" id="photodeprofil" name="photodeprofil">
                 </div>
 
                 <button type="submit" name="inscription" value="inscription" class="btn btn-primary w-100">Inscription</button>
