@@ -1,35 +1,37 @@
-
 {% extends "index.html.twig" %}
 
 {% block section %}
     <div class="container mt-4">
         <div class="row justify-content-center">
-            <legend class="text-center pb-3">Ajouter un projet </legend>
+            <legend class="text-center pb-3">Ajouter un projet</legend>
             <div class="col-lg-5">
                 <form action="index.php" method="post" enctype="multipart/form-data">
                     <div class="form-group mb-2 pb-1">
                         <label for="titre">Titre</label>
-                        <input type="text" class="form-control" id="titre" name="titre" required placeholder="Entrez le titre du projet" value="{{ projs.titre }}">
+                        <input type="text" class="form-control" id="titre" name="titre" required
+                               placeholder="Entrez le titre du projet" value="{{ projs.titre }}">
                     </div>
 
                     <div class="form-group d-flex">
-                        <img id="projimage" src="img/{{ projs.image }}" alt="Photo du projet" class="img-thumbnail img-fluid mb-2 h-25 w-25">
+                        <img id="projimage" src="img/{{ projs.image }}" alt="Photo du projet"
+                             class="img-thumbnail img-fluid mb-2 h-25 w-25">
                         <div class="flex-column py-4 ps-2">
-                        <label for="image">Nouvelle image du projet</label>
-                        <input type="file" class="form-control-file" id="image" name="image">
+                            <label for="image">Nouvelle image du projet</label>
+                            <input type="file" class="form-control-file" id="image" name="image">
                         </div>
                     </div>
 
                     <div class="form-group pb-1">
                         <label for="nomtag">Tags</label>
-                        <input type="text" class="form-control" id="nomtag" name="nomtag" placeholder="Tags du projet" value="{{ tags.nomtag }}">
+                        <input type="text" class="form-control" id="nomtag" name="nomtag" placeholder="Tags du projet"
+                               value="{{ tags.nomtag }}">
                     </div>
 
                     <div class="form-group pb-1">
                         <label for="nomcate">Catégorie</label>
                         <select class="form-select" name="idcategorie" id="idcategorie">
                             {% for cate in cates %}
-                                <option value="{{cate.idcategorie}}">{{cate.nomcate}}</option>
+                                <option value="{{ cate.idcategorie }}">{{ cate.nomcate }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -38,7 +40,8 @@
                         <label for="idcontexte">Contexte</label>
                         <select class="form-select" name="idcontexte" id="idcontexte">
                             {% for contexte in cont %}
-                                <option value="{{contexte.idcontexte}}">{{contexte.identifiant}} - {{contexte.semestre}}  - {{contexte.intitule}} </option>
+                                <option value="{{ contexte.idcontexte }}">{{ contexte.identifiant }}
+                                    - {{ contexte.semestre }} - {{ contexte.intitule }} </option>
                             {% endfor %}
                         </select>
                     </div>
@@ -47,32 +50,38 @@
             <div class="col-lg-5">
                 <div class="form-group mb-1">
                     <label for="descproj">Description</label>
-                    <textarea class="form-control" id="descproj" name="descproj" rows="5" placeholder="Description du projet">{{ projs.descproj }}</textarea>
+                    <textarea class="form-control" id="descproj" name="descproj" rows="5"
+                              placeholder="Description du projet">{{ projs.descproj }}</textarea>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="liendemo">Lien démo</label>
-                    <input type="text" class="form-control" id="liendemo" name="liendemo" placeholder="Lien vers la démo" value="{{ projs.liendemo }}">
+                    <input type="text" class="form-control" id="liendemo" name="liendemo"
+                           placeholder="Lien vers la démo" value="{{ projs.liendemo }}">
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="url">Sources</label>
-                    <input type="text" class="form-control" id="url" name="url" placeholder="Liens vers les sources" value="{{ sources.url }}">
+                    <input type="text" class="form-control" id="url" name="url" placeholder="Liens vers les sources"
+                           value="{{ sources.url }}">
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="anneecrea">Année de création</label>
-                    <input type="text" class="form-control" id="anneecrea" name="anneecrea" placeholder="Année de création du projet" value="{{ projs.anneecrea }}">
+                    <input type="text" class="form-control" id="anneecrea" name="anneecrea"
+                           placeholder="Année de création du projet" value="{{ projs.anneecrea }}">
                 </div>
 
             </div>
 
-            <input  type="hidden" id="idtags" name="idtags" value="{{ projs.idprojet }}"/>
-            <input  type="hidden" id="idprojet" name="idprojet" value="{{ tags.idtags }}"/>
+            <input type="hidden" id="idtags" name="idtags" value="{{ projs.idprojet }}"/>
+            <input type="hidden" id="idprojet" name="idprojet" value="{{ tags.idtags }}"/>
 
             <!-- Bouton en dehors des colonnes, centré et plus large -->
             <div class="col-lg-12 text-center mt-4">
-                <button type="submit" name="valider_modif" value="valider_modif" class="btn btn-primary btn-lg px-5 py-2">Modifier le proj</button>
+                <button type="submit" name="valider_modif" value="valider_modif"
+                        class="btn btn-primary btn-lg px-5 py-2">Modifier le proj
+                </button>
             </div>
 
             </form>

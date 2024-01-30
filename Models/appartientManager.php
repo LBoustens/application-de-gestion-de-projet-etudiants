@@ -1,10 +1,12 @@
 <?php
+
 /**
- * définition de la classe itineraire
+ * Définition d'une classe permettant de gérer la liaison entre cate et proj
  */
 class AppartientManager
 {
     private $_db; // Instance de PDO - objet de connexion au SGBD
+
     /**
      * Constructeur = initialisation de la connexion vers le SGBD
      */
@@ -12,26 +14,30 @@ class AppartientManager
     {
         $this->_db = $db;
     }
+
     /**
-     * retourne l'ensemble des Projets présents dans la BD
-     * @return Projet[]
+     * ajout de la catégorie lié au projet dans la BD
+     * @param Appartient $liaisoncate
+     * @param $proj
+     * @return mixed
      */
-    public function liaisonCate(Appartient $liaisoncate, $proj){
+    public function addLiaisonCate(Appartient $liaisoncate, $proj)
+    {
 
         $req = "INSERT INTO appartient (idprojet, idcategorie) VALUES (?,?)";
         $stmt = $this->_db->prepare($req);
         $res = $stmt->execute(array($proj->idProjet(), $liaisoncate->idCategorie()));
-		// pour debuguer les requêtes SQL
-		$errorInfo = $stmt->errorInfo();
-		if ($errorInfo[0] != 0) {
-			print_r($errorInfo);
-		}
+        // pour debuguer les requêtes SQL
+        $errorInfo = $stmt->errorInfo();
+        if ($errorInfo[0] != 0) {
+            print_r($errorInfo);
+        }
         return $res;
     }
 
     /**
      * modification d'une liaison categorie dans la BD
-     * @param Appartient
+     * @param Appartient $appartient
      * @return boolean
      */
     public function updateAppartient(Appartient $appartient): bool
@@ -48,11 +54,11 @@ class AppartientManager
         );
         // Modifie la ligne suivante pour renvoyer true si au moins une ligne est mise à jour
         return $stmt->rowCount() > 0;
-
     }
+
     /**
      * suppression d'appartient dans la base de données
-     * @param Participer
+     * @param Appartient $liaisoncate
      * @return boolean true si suppression, false sinon
      */
     public function deleteAppartient(Appartient $liaisoncate): bool
@@ -62,10 +68,4 @@ class AppartientManager
         return $stmt->execute(array($liaisoncate->idProjet()));
     }
 
-    public function deleteAppartientAdmin(Appartient $liaisoncate): bool
-    {
-        $req = "DELETE FROM appartient WHERE idcategorie = ?";
-        $stmt = $this->_db->prepare($req);
-        return $stmt->execute(array($liaisoncate->idCategorie()));
-    }
 }

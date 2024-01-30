@@ -1,64 +1,53 @@
 <?php
+
 /**
- * définition de la classe itineraire
+ * Définition d'une classe permettant de gérer les sources
+ *   en relation avec la base de données
  */
 class SourcesManager
 {
-
-	private $_db; // Instance de PDO - objet de connexion au SGBD
-
-	/**
-	 * Constructeur = initialisation de la connexion vers le SGBD
-	 */
-	public function __construct($db)
-	{
-		$this->_db = $db;
-	}
-
-	public function addSources(Sources $sources, $proj)
-	{
-		// calcul d'un nouveau code du Projet non déja utilisé = Maximum + 1
-		$stmt = $this->_db->prepare("SELECT max(idsources) AS maximum FROM sources");
-		$stmt->execute();
-		$sources->setIdSources($stmt->fetchColumn() + 1);
-
-		$req = "INSERT INTO sources (idprojet, idsources, url)  VALUES (?,?,?)";
-		$stmt = $this->_db->prepare($req);
-		$res = $stmt->execute(array($proj->idProjet(), $sources->idSources(), $sources->url()));
-		// pour debuguer les requêtes SQL
-		$errorInfo = $stmt->errorInfo();
-		if ($errorInfo[0] != 0) {
-			print_r($errorInfo);
-		}
-		return $res;
-	}
-
-	public function getDetailsSource($idprojet)
-	{
-		$sources = array();
-		$req = "SELECT idsources, url FROM sources WHERE idprojet= ?";
-		$stmt = $this->_db->prepare($req);
-		$stmt->execute(array($idprojet));
-		// pour debuguer les requêtes SQL
-		$errorInfo = $stmt->errorInfo();
-		if ($errorInfo[0] != 0) {
-			print_r($errorInfo);
-		}
-		// récup des données
-		while ($donnees = $stmt->fetch()) {
-			$sources[] = new Sources($donnees);
-		}
-		return $sources;
-	}
+    private $_db; // Instance de PDO - objet de connexion au SGBD
 
     /**
-     * recherche dans la BD d'une source à partir de son id
-     * @param int $iditi
+     * Constructeur = initialisation de la connexion vers le SGBD
+     */
+    public function __construct($db)
+    {
+        $this->_db = $db;
+    }
+
+    /**
+     * ajout d'une source dans la BD
+     * @param Sources $sources
+     * @param $proj
+     * @return rien
+     */
+    public function addSources(Sources $sources, $proj)
+    {
+        // calcul d'un nouveau code du Projet non déja utilisé = Maximum + 1
+        $stmt = $this->_db->prepare("SELECT max(idsources) AS maximum FROM sources");
+        $stmt->execute();
+        $sources->setIdSources($stmt->fetchColumn() + 1);
+
+        $req = "INSERT INTO sources (idprojet, idsources, url)  VALUES (?,?,?)";
+        $stmt = $this->_db->prepare($req);
+        $res = $stmt->execute(array($proj->idProjet(), $sources->idSources(), $sources->url()));
+        // pour debuguer les requêtes SQL
+        $errorInfo = $stmt->errorInfo();
+        if ($errorInfo[0] != 0) {
+            print_r($errorInfo);
+        }
+        return $res;
+    }
+
+    /**
+     * retourne la tag à partir de l'id projet
+     * @param $idprojet
      * @return Sources
      */
-    public function getSources(int $idprojet): Sources
+    public function getDetailsSource($idprojet)
     {
-        $req = 'SELECT idsources, url FROM sources WHERE idprojet= ?';
+        $req = "SELECT idsources, url FROM sources WHERE idprojet= ?";
         $stmt = $this->_db->prepare($req);
         $stmt->execute(array($idprojet));
         // pour debuguer les requêtes SQL
@@ -66,13 +55,15 @@ class SourcesManager
         if ($errorInfo[0] != 0) {
             print_r($errorInfo);
         }
+        // récup des données
         $sources = new Sources($stmt->fetch());
         return $sources;
     }
 
+
     /**
      * modification d'une source dans la BD
-     * @param Tags
+     * @param Sources $sources
      * @return boolean
      */
     public function updateSource(Sources $sources): bool
@@ -93,8 +84,8 @@ class SourcesManager
     }
 
     /**
-     * suppression d'une Sources dans la base de données
-     * @param Sources
+     * suppression d'une source dans la base de données
+     * @param Sources $sources
      * @return boolean true si suppression, false sinon
      */
     public function deleteSources(Sources $sources): bool

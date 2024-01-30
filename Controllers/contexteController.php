@@ -2,24 +2,34 @@
 include "Modules/contexte.php";
 include "Models/contexteManager.php";
 
-class ContexteController {
-
+// Définition d'une classe permettant de controller les contextes en relation avec la base de données/
+class ContexteController
+{
     private $contexteManager; // instance du manager
     private $twig;
 
     /**
      * Constructeur = initialisation de la connexion vers le SGBD
      */
-    public function __construct($db, $twig) {
+    public function __construct($db, $twig)
+    {
         $this->contexteManager = new ContexteManager($db);
         $this->twig = $twig;
     }
 
-    public function contAdmin() {
+    /**  page gestion contexte
+     * @return void
+     */
+    public function contAdmin()
+    {
         $conts = $this->contexteManager->getContexteAdmin();
-        echo $this->twig->render('contadmin.html.twig',array('conts'=>$conts,'admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces'=> $_SESSION['acces']));
+        echo $this->twig->render('contadmin.html.twig', array('conts' => $conts, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
     }
 
+    /**
+     * Ajout dans la BD d'un contexte par un admin
+     * @return void
+     */
     public function addContAdmin()
     {
         $contexte = new Contexte($_POST);
@@ -32,8 +42,13 @@ class ContexteController {
             $message .= "Problème lors de l'ajout de la contexte";
         }
 
-        echo $this->twig->render('contadmin.html.twig', array('conts'=>$conts, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+        echo $this->twig->render('contadmin.html.twig', array('conts' => $conts, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
     }
+
+    /**
+     * Suppression dans la BD d'un contexte par un admin
+     * @return void
+     */
     public function suppContAdmin()
     {
         $contexte = new Contexte($_POST);
@@ -46,10 +61,9 @@ class ContexteController {
             $message .= "Problème lors de la suppression du contexte";
         }
 
-
-        echo $this->twig->render('contadmin.html.twig', array('conts'=>$conts, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+        echo $this->twig->render('contadmin.html.twig', array('conts' => $conts, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
     }
 
 }
 
-
+?>

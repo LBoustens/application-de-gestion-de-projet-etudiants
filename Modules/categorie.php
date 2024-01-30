@@ -1,6 +1,6 @@
 <?php
 /**
-* définition de la classe Categorie
+* définition de la classe categorie
 */
 class Categorie {
     private int $_idcategorie;  

@@ -1,6 +1,6 @@
 <?php
 /**
- * définition de la classe Appartient
+ * définition de la classe appartient
  */
 class Appartient
 {

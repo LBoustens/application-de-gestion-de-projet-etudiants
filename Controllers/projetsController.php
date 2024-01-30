@@ -2,175 +2,182 @@
 include "Modules/projets.php";
 include "Models/projetsManager.php";
 
-// Définition d'une classe permettant de gérer les projets en relation avec la base de données
+// Définition d'une classe permettant de controller les projets en relation avec la base de données
 class ProjetController
 {
-	private $projetManager;
-	private $utiManager;
-	private $cateManager; // instance du manager
-	private $contManager;
-	private $sourcesManager;
-	private $tagsManager;
-	private $appartientManager;
-	private $associerManager;
-	private $participerManager;
+    private $projetManager;
+    private $utiManager;
+    private $cateManager; // instance du manager
+    private $contManager;
+    private $sourcesManager;
+    private $tagsManager;
+    private $appartientManager;
+    private $associerManager;
+    private $participerManager;
     private $commentManager;
     private $noteManager;
-	private $twig;
+    private $twig;
 
-	// Constructeur = initialisation de la connexion vers le SGBD
-	public function __construct($db, $twig)
-	{
-		$this->projetManager = new ProjetManager($db);
-		$this->utiManager = new UtilisateurManager($db);
-		$this->cateManager = new CategorieManager($db);
-		$this->contManager = new ContexteManager($db);
-		$this->sourcesManager = new SourcesManager($db);
-		$this->tagsManager = new TagsManager($db);
-		$this->appartientManager = new AppartientManager($db);
-		$this->associerManager = new AssocierManager($db);
-		$this->participerManager = new ParticiperManager($db);
+    // Constructeur = initialisation de la connexion vers le SGBD
+    public function __construct($db, $twig)
+    {
+        $this->projetManager = new ProjetManager($db);
+        $this->utiManager = new UtilisateurManager($db);
+        $this->cateManager = new CategorieManager($db);
+        $this->contManager = new ContexteManager($db);
+        $this->sourcesManager = new SourcesManager($db);
+        $this->tagsManager = new TagsManager($db);
+        $this->appartientManager = new AppartientManager($db);
+        $this->associerManager = new AssocierManager($db);
+        $this->participerManager = new ParticiperManager($db);
         $this->commentManager = new CommentaireManager($db);
         $this->noteManager = new NotationManager($db);
-		$this->twig = $twig;
-	}
+        $this->twig = $twig;
+    }
 
-	// liste de tous les projets
-	public function listeProjets()
-	{
-		$projets = $this->projetManager->getList();
-		echo $this->twig->render('projets_liste.html.twig', array('projets' => $projets, 'admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+    /**
+     * liste de tous les projets
+     * @return void
+     */
+    public function listeProjets()
+    {
+        $projets = $this->projetManager->getList();
+        echo $this->twig->render('projets_liste.html.twig', array('projets' => $projets, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+    }
 
-	}
-
-	// détails d'un projet
-	function detailsProjet()
-	{
-		$projs = $this->projetManager->getDetailsProj($_POST["idprojet"]);
-		$detailsources = $this->sourcesManager->getDetailsSource($_POST["idprojet"]);
-		$detailconts = $this->contManager->getDetailsContexte($_POST["idprojet"]);
-		$detailcates = $this->cateManager->getdetailsCate($_POST["idprojet"]);
-		$detailtags = $this->tagsManager->getDetailsTag($_POST["idprojet"]);
-		$detailutis = $this->utiManager->getDetailsUtilisateur($_POST["idprojet"]);
+    /** détail d'un projet
+     * @return void
+     */
+    function detailsProjet()
+    {
+        $projs = $this->projetManager->getProj($_POST["idprojet"]);
+        $detailsources = $this->sourcesManager->getDetailsSource($_POST["idprojet"]);
+        $detailconts = $this->contManager->getDetailsContexte($_POST["idprojet"]);
+        $detailcates = $this->cateManager->getdetailsCate($_POST["idprojet"]);
+        $detailtags = $this->tagsManager->getDetailsTag($_POST["idprojet"]);
+        $detailutis = $this->utiManager->getDetailsUtilisateur($_POST["idprojet"]);
         $comments = $this->commentManager->getListComment($_POST["idprojet"]);
         $notes = $this->noteManager->getListNote($_POST["idprojet"]);
-		echo $this->twig->render('detailproj.html.twig', array('projs' => $projs, 'detailutis' => $detailutis, 'detailtags' => $detailtags, 'detailcates' => $detailcates, 'detailconts' => $detailconts , 'detailsources' => $detailsources, 'comments' => $comments, 'notes' => $notes, 'acces' => $_SESSION['acces'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'admin' => $_SESSION['admin'], 'idutilisateur' => $_SESSION['idutilisateur']));
-	}
+        echo $this->twig->render('detailproj.html.twig', array('projs' => $projs, 'detailutis' => $detailutis, 'detailtags' => $detailtags, 'detailcates' => $detailcates, 'detailconts' => $detailconts, 'detailsources' => $detailsources, 'comments' => $comments, 'notes' => $notes, 'acces' => $_SESSION['acces'], 'photodeprofil' => $_SESSION['photodeprofil'], 'admin' => $_SESSION['admin'], 'idutilisateur' => $_SESSION['idutilisateur']));
+    }
 
-	// liste des projets de l'utilisateur connecté
-	public function listeMesProjets($idutilisateur)
-	{
-		$projets = $this->projetManager->getListUtilisateur($idutilisateur);
-		echo $this->twig->render('mesprojets.html.twig', array('projets' => $projets, 'admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
-	}
+    /** liste des projets de l'utilisateur connecté
+     * @param $idutilisateur
+     * @return void
+     */
+    public function listeMesProjets($idutilisateur)
+    {
+        $projets = $this->projetManager->getListUtilisateur($idutilisateur);
+        echo $this->twig->render('mesprojets.html.twig', array('projets' => $projets, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+    }
 
-    // formulaire ajout d'un projet
-	public function formAjoutProjet()
-	{
-		$cates = $this->cateManager->getCategorie();
-		$cont = $this->contManager->getContexte();
-		echo $this->twig->render('projet_ajout.html.twig', array('cates' => $cates, 'cont' => $cont, 'photodeprofil'=>$_SESSION['photodeprofil'], 'admin' => $_SESSION['admin'], 'acces' => $_SESSION['acces'], 'idutilisateur' => $_SESSION['idutilisateur']));
-	}
+    /** formulaire ajout d'un projet
+     * @return void
+     */
+    public function formAjoutProjet()
+    {
+        $cates = $this->cateManager->getCategorie();
+        $cont = $this->contManager->getContexte();
+        echo $this->twig->render('projet_ajout.html.twig', array('cates' => $cates, 'cont' => $cont, 'photodeprofil' => $_SESSION['photodeprofil'], 'admin' => $_SESSION['admin'], 'acces' => $_SESSION['acces'], 'idutilisateur' => $_SESSION['idutilisateur']));
+    }
 
-	// ajout dans la BD d'un projet à partir du form
-	public function ajoutProjet($idutilisateur)
-	{
-
+    /** ajout dans la BD d'un projet à partir du form
+     * @return void
+     */
+    public function ajoutProjet($idutilisateur)
+    {
         // fait avec Chat GPT
-    $targetDirectory = "img/"; // Le dossier dans lequel vous souhaitez enregistrer les fichiers
-    $targetFile = $targetDirectory . basename($_FILES["image"]["name"]);
-    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+        $targetDirectory = "img/"; // Le dossier dans lequel j'ai enregistré les fichiers
+        $targetFile = $targetDirectory . basename($_FILES["image"]["name"]);
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-    // Vérifier si le fichier est une image réelle ou un faux fichier image
-    $check = getimagesize($_FILES["image"]["tmp_name"]);
-    if ($check === false) {
-        echo "Le fichier n'est pas une image.";
-    }
-    // Vérifier si le fichier existe déjà
-    if (file_exists($targetFile)) {
-        echo "Désolé, le fichier existe déjà.";
-    }
-    // Vérifier la taille du fichier
-    if ($_FILES["image"]["size"] > 5000000) {
-        echo "Désolé, votre fichier est trop volumineux.";
-    }
-    // Autoriser certains formats de fichiers
-    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-        && $imageFileType != "gif" && $imageFileType != "webp") {
-        echo "Désolé, seuls les fichiers JPG, JPEG, PNG GIF et WEBP sont autorisés.";
-    }
+        // Vérifie si le fichier est une image réelle ou un faux fichier image
+        $check = getimagesize($_FILES["image"]["tmp_name"]);
+        if ($check === false) {
+            echo "Le fichier n'est pas une image.";
+        }
+        // Vérifie si le fichier existe déjà
+        if (file_exists($targetFile)) {
+            echo "Désolé, le fichier existe déjà.";
+        }
+        // Vérifie la taille du fichier
+        if ($_FILES["image"]["size"] > 5000000) {
+            echo "Désolé, votre fichier est trop volumineux.";
+        }
+        // Autorise certains formats de fichiers
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif" && $imageFileType != "webp") {
+            echo "Désolé, seuls les fichiers JPG, JPEG, PNG GIF et WEBP sont autorisés.";
+        }
 
         $proj = new Projet($_POST);
         // Si le fichier a été téléchargé avec succès, met à jour $proj avec le nom du fichier
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-            // Stockez le nom du fichier dans l'objet $proj
+            // Stocke le nom du fichier dans l'objet $proj
             $proj->setImage(basename($_FILES["image"]["name"]));
-            $message = "Le fichier " . htmlspecialchars(basename($_FILES["image"]["name"])) . " a été téléchargé.";
         } else {
             echo "Désolé, une erreur s'est produite lors du téléchargement de votre fichier.";
         }
         // Fin de l'utilisation de Chat GPT
-		$tags = new Tags($_POST);
-		$sources = new Sources($_POST);
-		$liaisoncate = new Appartient($_POST);
-		$parti = new Participer($_POST);
-		$okProjet = $this->projetManager->add($proj);
-		$okTags = $this->tagsManager->addTags($tags);
-		$okSources = $this->sourcesManager->addSources($sources, $proj);
-		$okAppartient = $this->appartientManager->liaisonCate($liaisoncate, $proj);
-		$okAssocier = $this->associerManager->liaisonTags($tags, $proj);
-		$okParti = $this->participerManager->liaisonUtilisateur($parti, $proj);
+        $tags = new Tags($_POST);
+        $sources = new Sources($_POST);
+        $liaisoncate = new Appartient($_POST);
+        $parti = new Participer($_POST);
+        $okProjet = $this->projetManager->add($proj);
+        $okTags = $this->tagsManager->addTags($tags);
+        $okSources = $this->sourcesManager->addSources($sources, $proj);
+        $okAppartient = $this->appartientManager->addLiaisonCate($liaisoncate, $proj);
+        $okAssocier = $this->associerManager->addLiaisonTags($tags, $proj);
+        $okParti = $this->participerManager->addLiaisonUtilisateur($parti, $proj);
         $projets = $this->projetManager->getListUtilisateur($idutilisateur);
 
-		$message = "Projet ajouté avec succès";
+        $message = "Projet ajouté avec succès";
 
-		if (!$okProjet) {
-			$message = "Problème lors de l'ajout du projet";
-		}
+        if (!$okProjet) {
+            $message = "Problème lors de l'ajout du projet";
+        }
 
-		if (!$okTags) {
-			$message .= " - Problème lors de l'ajout des tags";
-		}
+        if (!$okTags) {
+            $message .= " - Problème lors de l'ajout des tags";
+        }
 
-		if (!$okSources) {
-			$message .= " - Problème lors de l'ajout des sources";
-		}
+        if (!$okSources) {
+            $message .= " - Problème lors de l'ajout des sources";
+        }
 
-		if (!$okAppartient) {
-			$message .= " - Problème lors de l'ajout des sources";
-		}
+        if (!$okAppartient) {
+            $message .= " - Problème lors de l'ajout des sources";
+        }
 
-		if (!$okAssocier) {
-			$message .= " - Problème lors de l'ajout des sources";
-		}
+        if (!$okAssocier) {
+            $message .= " - Problème lors de l'ajout des sources";
+        }
 
-		if (!$okParti) {
-			$message .= " - Problème lors de l'ajout des sources";
-		}
+        if (!$okParti) {
+            $message .= " - Problème lors de l'ajout des sources";
+        }
 
+        echo $this->twig->render('mesprojets.html.twig', array('projets' => $projets, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+    }
 
-		echo $this->twig->render('mesprojets.html.twig', array('projets' => $projets, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
-	}
+    /**
+     * form de choix d'un projet à supprimer
+     * @param  $idutilisateur
+     * @return void
+     */
+    public function choixSuppProjet($idutilisateur)
+    {
+        $projets = $this->projetManager->getListUtilisateur($idutilisateur);
+        echo $this->twig->render('projet_choix_suppression.html.twig', array('projets' => $projets, 'photodeprofil' => $_SESSION['photodeprofil'], 'admin' => $_SESSION['admin'], 'acces' => $_SESSION['acces']));
+    }
 
-
-	/**
-	 * form de choix d'un projet  à supprimer
-	 * @param aucun
-	 * @return rien
-	 */
-	public function choixSuppProjet($idutilisateur)
-	{
-		$projets = $this->projetManager->getListUtilisateur($idutilisateur);
-		echo $this->twig->render('projet_choix_suppression.html.twig', array('projets' => $projets, 'photodeprofil'=>$_SESSION['photodeprofil'], 'admin' => $_SESSION['admin'], 'acces' => $_SESSION['acces']));
-	}
-
-	/**
-	 * suppression dans la BD d'un projet avec les tags, les sources et les liaisons à partir de l'id choisi dans le form
-	 * @param aucun
-	 * @return rien
-	 */
-	public function suppProjet($idutilisateur)
-	{
+    /**
+     * suppression dans la BD d'un projet avec les tags, les sources et les liaisons à partir de l'id choisi dans le form
+     * @param $idutilisateur
+     * @return void
+     */
+    public function suppProjet($idutilisateur)
+    {
         $sources = new Sources($_POST);
         $liaisoncate = new Appartient($_POST);
         $parti = new Participer($_POST);
@@ -182,11 +189,11 @@ class ProjetController
         $okSources = $this->sourcesManager->deleteSources($sources);
         $okAppartient = $this->appartientManager->deleteAppartient($liaisoncate);
         $okParti = $this->participerManager->deleteParticiper($parti);
-        $okAssostags= $this->associerManager->deleteLiaisonTags($assostags);
+        $okAssostags = $this->associerManager->deleteLiaisonTags($assostags);
         $okTags = $this->tagsManager->deleteTags();
         $okNote = $this->noteManager->deleteNote($note);
         $okComment = $this->commentManager->deleteComment($comment);
-        $okProjet  = $this->projetManager->delete($proj);
+        $okProjet = $this->projetManager->delete($proj);
         $projets = $this->projetManager->getListUtilisateur($idutilisateur);
 
         $message = "Projet supprimé avec succès";
@@ -223,33 +230,33 @@ class ProjetController
             $message = "Problème lors de la suppression du projet";
         }
 
-		echo $this->twig->render('mesprojets.html.twig', array('projets'=>$projets, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
-	}
+        echo $this->twig->render('mesprojets.html.twig', array('projets' => $projets, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+    }
 
-	/**
-	 * form de choix du projet à modifier
-	 * @param aucun
-	 * @return rien
-	 */
-	public function choixModProjet($idutilisateur)
-	{
-		$projets = $this->projetManager->getListUtilisateur($idutilisateur);
-		echo $this->twig->render('projet_choix_modification.html.twig', array('projets' => $projets, 'admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
-	}
-	/**
-	 * form de saisi des nouvelles valeurs du projet à modifier
-	 * @param aucun
-	 * @return rien
-	 */
-	public function saisieModProjet()
-	{
-		$projs = $this->projetManager->get($_POST["idprojet"]);
-        $sources = $this->sourcesManager->getSources($_POST["idprojet"]);
+    /**
+     * form de choix du projet à modifier
+     * @param $idutilisateur
+     * @return void
+     */
+    public function choixModProjet($idutilisateur)
+    {
+        $projets = $this->projetManager->getListUtilisateur($idutilisateur);
+        echo $this->twig->render('projet_choix_modification.html.twig', array('projets' => $projets, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+    }
+
+    /**
+     * form de saisi des nouvelles valeurs du projet à modifier
+     * @return void
+     */
+    public function saisieModProjet()
+    {
+        $projs = $this->projetManager->getProj($_POST["idprojet"]);
+        $sources = $this->sourcesManager->getDetailsSource($_POST["idprojet"]);
         $cates = $this->cateManager->getCategorie();
         $cont = $this->contManager->getContexte();
-        $tags = $this->tagsManager->getTag($_POST["idprojet"]);
-		echo $this->twig->render('projet_modification.html.twig', array('projs' => $projs,'tags' => $tags, 'cates' => $cates, 'cont' => $cont , 'sources' => $sources, 'admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
-	}
+        $tags = $this->tagsManager->getDetailsTag($_POST["idprojet"]);
+        echo $this->twig->render('projet_modification.html.twig', array('projs' => $projs, 'tags' => $tags, 'cates' => $cates, 'cont' => $cont, 'sources' => $sources, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+    }
 
     /**
      * Modification dans la BD d'un projet à partir des données du formulaire précédent
@@ -264,28 +271,28 @@ class ProjetController
         $proj = new Projet($_POST);
         $message = "";
 
-        // Vérifier si le fichier a été modifié
+        // Vérifie si le fichier a été modifié
         if ($_FILES["image"]["size"] > 0) {
             $targetDirectory = "img/";
             $targetFile = $targetDirectory . basename($_FILES["image"]["name"]);
             $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-            // Vérifier si le fichier est une image réelle ou un faux fichier image
+            // Vérifie si le fichier est une image réelle ou un faux fichier image
             $check = getimagesize($_FILES["image"]["tmp_name"]);
             if ($check === false) {
-                // Gérer l'erreur
+                // Gére l'erreur
                 echo "Le fichier n'est pas une image.";
                 return;
             }
 
-            // Vérifier la taille du fichier
+            // Vérifie la taille du fichier
             if ($_FILES["image"]["size"] > 5000000) {
                 // Gérer l'erreur
                 echo "Désolé, votre fichier est trop volumineux.";
                 return;
             }
 
-            // Autoriser certains formats de fichiers
+            // Autorise certains formats de fichiers
             $allowedFormats = ["jpg", "jpeg", "png", "gif", "webp"];
             if (!in_array($imageFileType, $allowedFormats)) {
                 // Gérer l'erreur
@@ -298,13 +305,13 @@ class ProjetController
                 $proj->setImage(basename($_FILES["image"]["name"]));
                 $message .= "Le fichier " . htmlspecialchars(basename($_FILES["image"]["name"])) . " a été téléchargé.";
             } else {
-                // Gérer l'erreur d'upload
+                // Gére l'erreur d'upload
                 echo "Désolé, une erreur s'est produite lors du téléchargement de votre fichier.";
                 return;
             }
         } else {
             // Si aucun fichier n'est téléchargé, conserve le nom de l'image existante
-            $projExistant = $this->projetManager->get($_POST["idprojet"]); // Vous devrez peut-être ajuster la méthode selon votre structure de base de données
+            $projExistant = $this->projetManager->getProj($_POST["idprojet"]); // Vous devrez peut-être ajuster la méthode selon votre structure de base de données
             $proj->setImage($projExistant->image());
         }
 
@@ -326,41 +333,48 @@ class ProjetController
         }
     }
 
-
     /**
-	 * recherche dans la BD d'un projet à partir des données du form
-	 * @param aucun
-	 * @return rien
-	 */
-	 	public function rechercheProjet() {
-	        $projets = $this->projetManager->searchProj($_POST["titre"], $_POST["descproj"]);
-	        echo $this->twig->render('projets_liste.html.twig',array('projets'=>$projets, 'admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces'=> $_SESSION['acces']));
-	    }
+     * recherche dans la BD d'un projet à partir des données du form
+     * @return void
+     */
+    public function rechercheProjet()
+    {
+        $projets = $this->projetManager->searchProj($_POST["titre"], $_POST["descproj"]);
+        echo $this->twig->render('projets_liste.html.twig', array('projets' => $projets, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+    }
 
-	// affichage de la page d'accueil
-	public function accueil()
-	{
-		echo $this->twig->render('accueil.html.twig', array('photodeprofil'=>$_SESSION['photodeprofil'], 'admin' => $_SESSION['admin'], 'acces' => $_SESSION['acces']));
-	}
-	// affichage du form d'inscription
-	public function inscription()
-	{
-		echo $this->twig->render('inscription.html.twig', array('acces' => $_SESSION['acces']));
-	}
-	// affichage du form de contact
-	public function contact()
-	{
-		echo $this->twig->render('contact.html.twig', array('admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
-	}
-    // affichage de la page mentions légales
-	public function mentions()
-	{
-		echo $this->twig->render('mentions.html.twig', array('admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
-	}
-    // affichage de la page politique de confidentialité
-	public function politique()
-	{
-		echo $this->twig->render('politique.html.twig', array('admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
-	}
+    /** affichage de la page d'accueil
+     * @return void
+     */
+    public function accueil()
+    {
+        echo $this->twig->render('accueil.html.twig', array('photodeprofil' => $_SESSION['photodeprofil'], 'admin' => $_SESSION['admin'], 'acces' => $_SESSION['acces']));
+    }
+
+    /** affichage du form d'inscription
+     * @return void
+     */
+    public function inscription()
+    {
+        echo $this->twig->render('inscription.html.twig', array('acces' => $_SESSION['acces']));
+    }
+
+    /** affichage de la page mentions légales
+     * @return void
+     */
+    public function mentions()
+    {
+        echo $this->twig->render('mentions.html.twig', array('admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+    }
+
+    /** affichage de la page politique de confidentialité
+     * @return void
+     */
+    public function politique()
+    {
+        echo $this->twig->render('politique.html.twig', array('admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces']));
+    }
 
 }
+
+?>

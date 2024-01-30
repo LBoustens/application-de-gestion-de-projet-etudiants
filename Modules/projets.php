@@ -1,6 +1,6 @@
 <?php
 /**
-* définition de la classe itineraire
+* définition de la classe projet
 */
 class Projet {
 	private int $_idprojet;   

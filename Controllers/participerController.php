@@ -1,13 +1,10 @@
 <?php
 include "Modules/participer.php";
 include "Models/participerManager.php";
-/**
- * Définition d'une classe permettant de gérer les projets
- *   en relation avec la base de données
- */
+
+// Définition d'une classe permettant de controller les liaison entre uti et proj en relation avec la base de données
 class ParticiperController
 {
-
     private $partiManager; // instance du manager
     private $twig;
 
@@ -20,5 +17,6 @@ class ParticiperController
         $this->twig = $twig;
     }
 
-
 }
+
+?>

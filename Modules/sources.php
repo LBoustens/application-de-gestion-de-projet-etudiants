@@ -1,6 +1,6 @@
 <?php
 /**
-* définition de la classe Sources
+* définition de la classe sources
 */
 class Sources {
     private int $_idprojet;  

@@ -1,9 +1,8 @@
-
-// Afficher la nouvelle image de profl sélectionnée
-document.getElementById('image').addEventListener('change', function(event) {
+// Afficher la nouvelle image du projet sélectionnée
+document.getElementById('image').addEventListener('change', function (event) {
     var input = event.target;
     var reader = new FileReader();
-    reader.onload = function(){
+    reader.onload = function () {
         var image = document.getElementById('projimage');
         image.src = reader.result;
     };

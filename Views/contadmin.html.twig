@@ -1,36 +1,42 @@
 {% extends "index.html.twig" %}
 
 {% block section %}
-        <form method="post" action="index.php">
-            <fieldset><legend class="pb-3">Ajouter un contexte</legend>
-                <div class="row">
-                    <div class="form-group col-md-4">
-                        <label for="intitule">Intitulé</label>
-                        <input type="text" class="form-control" name="intitule" id="intitule" placeholder="Entrez l'intitulé">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="identifiant">Identifiant</label>
-                        <input type="text" class="form-control" name="identifiant" id="identifiant" placeholder="Entrez votre identifiant">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="semestre">Semestre</label>
-                        <input type="text" class="form-control" name="semestre" id="semestre" placeholder="Entrez votre semestre">
-                    </div>
+    <form method="post" action="index.php">
+        <fieldset>
+            <legend class="pb-3">Ajouter un contexte</legend>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="intitule">Intitulé</label>
+                    <input type="text" class="form-control" name="intitule" id="intitule"
+                           placeholder="Entrez l'intitulé">
                 </div>
-                <button type="submit" name="ajouter_cont"  class="btn btn-primary my-3">Ajouter un contexte</button>
+                <div class="form-group col-md-4">
+                    <label for="identifiant">Identifiant</label>
+                    <input type="text" class="form-control" name="identifiant" id="identifiant"
+                           placeholder="Entrez votre identifiant">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="semestre">Semestre</label>
+                    <input type="text" class="form-control" name="semestre" id="semestre"
+                           placeholder="Entrez votre semestre">
+                </div>
+            </div>
+            <button type="submit" name="ajouter_cont" class="btn btn-primary my-3">Ajouter un contexte</button>
 
-            </fieldset>
-        </form>
+        </fieldset>
+    </form>
 
 
-        <form method="post" action="index.php">
-            <fieldset><legend class="pb-3">Supprimer un contexte</legend>
-                <select name="idcontexte" class="form-control form-control-sm mb-3">
-                    {% for cont in conts %}
-                        <option value="{{cont.idcontexte}}">{{cont.intitule}} - {{cont.identifiant}} - {{cont.semestre}} </option>
-                    {% endfor %}
-                </select>
-                <button type="submit" name="cont_supp"  class="btn btn-primary">Supprimer un contexte</button>
-            </fieldset>
-        </form>
+    <form method="post" action="index.php">
+        <fieldset>
+            <legend class="pb-3">Supprimer un contexte</legend>
+            <select name="idcontexte" class="form-control form-control-sm mb-3">
+                {% for cont in conts %}
+                    <option value="{{ cont.idcontexte }}">{{ cont.intitule }} - {{ cont.identifiant }}
+                        - {{ cont.semestre }} </option>
+                {% endfor %}
+            </select>
+            <button type="submit" name="cont_supp" class="btn btn-primary">Supprimer un contexte</button>
+        </fieldset>
+    </form>
 {% endblock %}

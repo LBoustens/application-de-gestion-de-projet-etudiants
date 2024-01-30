@@ -1,6 +1,6 @@
 <?php
 /**
-* définition de la classe Tags
+* définition de la classe tags
 */
 class Tags {
 	private int $_idtags;   

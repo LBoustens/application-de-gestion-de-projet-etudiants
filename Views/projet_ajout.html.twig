@@ -1,79 +1,86 @@
-
 {% extends "index.html.twig" %}
 
 {% block section %}
-            <div class="container mt-4">
-                <div class="row justify-content-center">
-                    <legend class="text-center pb-3">Ajouter un projet </legend>
-                    <div class="col-lg-5">
-                        <form action="index.php" method="post" enctype="multipart/form-data">
-                            <div class="form-group mb-3 pb-2">
-                                <label for="titre">Titre</label>
-                                <input type="text" class="form-control" id="titre" name="titre" required placeholder="Entrez le titre du projet">
-                            </div>
-
-                            <div class="form-group mb-3 pb-1">
-                                <label for="image">Image du projet</label>
-                                <input type="file" class="form-control-file" id="image" name="image">
-                            </div>
-
-                            <div class="form-group mb-3 pb-2">
-                                <label for="nomtag">Tags</label>
-                                <input type="text" class="form-control" id="nomtag" name="nomtag" placeholder="Tags du projet">
-                            </div>
-
-                            <div class="form-group mb-3 pb-2">
-                            <label for="nomcate">Catégorie</label>
-                            <select class="form-select" name="idcategorie" id="idcategorie">
-                               {% for cate in cates %}
-                                <option value="{{cate.idcategorie}}">{{cate.nomcate}}</option>
-                                {% endfor %}
-                            </select>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label for="idcontexte">Contexte</label>
-                                <select class="form-select" name="idcontexte" id="idcontexte">
-                                    {% for contexte in cont %}
-                                        <option value="{{contexte.idcontexte}}">{{contexte.identifiant}} - {{contexte.semestre}}  - {{contexte.intitule}} </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <legend class="text-center pb-3">Ajouter un projet</legend>
+            <div class="col-lg-5">
+                <form action="index.php" method="post" enctype="multipart/form-data">
+                    <div class="form-group mb-3 pb-2">
+                        <label for="titre">Titre</label>
+                        <input type="text" class="form-control" id="titre" name="titre" required
+                               placeholder="Entrez le titre du projet">
                     </div>
 
-                    <div class="col-lg-5">
-                        <div class="form-group mb-3">
-                            <label for="descproj">Description</label>
-                            <textarea class="form-control" id="descproj" name="descproj" rows="4" placeholder="Description du projet"></textarea>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label for="liendemo">Lien démo</label>
-                            <input type="text" class="form-control" id="liendemo" name="liendemo" placeholder="Lien vers la démo">
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label for="url">Sources</label>
-                            <input type="text" class="form-control" id="url" name="url" placeholder="Liens vers les sources" value="{{ detailsources.url  }}">
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label for="anneecrea">Année de création</label>
-                            <input type="text" class="form-control" id="anneecrea" name="anneecrea" placeholder="Année de création du projet">
-                        </div>
-
+                    <div class="form-group mb-3 pb-1">
+                        <label for="image">Image du projet</label>
+                        <input type="file" class="form-control-file" id="image" name="image">
                     </div>
 
-                    <!-- Bouton en dehors des colonnes, centré et plus large -->
-                    <div class="col-lg-12 text-center mt-4">
-                        <button type="submit" name="ajouter_proj" value="ajouter_proj" class="btn btn-primary btn-lg px-5 py-2">Ajouter</button>
+                    <div class="form-group mb-3 pb-2">
+                        <label for="nomtag">Tags</label>
+                        <input type="text" class="form-control" id="nomtag" name="nomtag" placeholder="Tags du projet">
                     </div>
 
-                    <input  type="hidden" id="idutilisateur" name="idutilisateur" value="{{ idutilisateur }}"/>
-        
-                    </form>
-                </div>
+                    <div class="form-group mb-3 pb-2">
+                        <label for="nomcate">Catégorie</label>
+                        <select class="form-select" name="idcategorie" id="idcategorie">
+                            {% for cate in cates %}
+                                <option value="{{ cate.idcategorie }}">{{ cate.nomcate }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="idcontexte">Contexte</label>
+                        <select class="form-select" name="idcontexte" id="idcontexte">
+                            {% for contexte in cont %}
+                                <option value="{{ contexte.idcontexte }}">{{ contexte.identifiant }}
+                                    - {{ contexte.semestre }} - {{ contexte.intitule }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
             </div>
+
+            <div class="col-lg-5">
+                <div class="form-group mb-3">
+                    <label for="descproj">Description</label>
+                    <textarea class="form-control" id="descproj" name="descproj" rows="4"
+                              placeholder="Description du projet"></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="liendemo">Lien démo</label>
+                    <input type="text" class="form-control" id="liendemo" name="liendemo"
+                           placeholder="Lien vers la démo">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="url">Sources</label>
+                    <input type="text" class="form-control" id="url" name="url" placeholder="Liens vers les sources"
+                           value="{{ detailsources.url }}">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="anneecrea">Année de création</label>
+                    <input type="text" class="form-control" id="anneecrea" name="anneecrea"
+                           placeholder="Année de création du projet">
+                </div>
+
+            </div>
+
+            <!-- Bouton en dehors des colonnes, centré et plus large -->
+            <div class="col-lg-12 text-center mt-4">
+                <button type="submit" name="ajouter_proj" value="ajouter_proj" class="btn btn-primary btn-lg px-5 py-2">
+                    Ajouter
+                </button>
+            </div>
+
+            <input type="hidden" id="idutilisateur" name="idutilisateur" value="{{ idutilisateur }}"/>
+
+            </form>
+        </div>
+    </div>
 
 
 

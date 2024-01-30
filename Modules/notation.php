@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Définition de la classe Commentaire
+ * Définition de la classe notation
  */
 class Notation {
     private int $_idnote;

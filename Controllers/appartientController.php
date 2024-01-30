@@ -1,13 +1,10 @@
 <?php
 include "Modules/appartient.php";
 include "Models/appartientManager.php";
-/**
- * Définition d'une classe permettant de gérer les projets
- *   en relation avec la base de données
- */
+
+// Définition d'une classe permettant de controller les liaison entre categorie et proj en relation avec la base de données
 class AppartientController
 {
-
     private $appartientManager; // instance du manager
     private $twig;
 
@@ -20,5 +17,6 @@ class AppartientController
         $this->twig = $twig;
     }
 
-
 }
+
+?>

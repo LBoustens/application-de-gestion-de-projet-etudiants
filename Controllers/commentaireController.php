@@ -2,13 +2,9 @@
 include "Modules/commentaire.php";
 include "Models/commentaireManager.php";
 
-/**
- * Définition d'une classe permettant de gérer les projets
- *   en relation avec la base de données
- */
+// Définition d'une classe permettant de controller les commentaires en relation avec la base de données
 class CommentaireController
 {
-
     private $commentManager;
     private $projetManager;
     private $utiManager;
@@ -41,13 +37,17 @@ class CommentaireController
         $this->twig = $twig;
     }
 
-
+    /**
+     * ajout d'un commentaire dans la BD
+     * @return void
+     */
     public function addComment()
     {
-        if(isset($_SESSION['acces']) && $_SESSION['acces'] == "oui") {
+        if (isset($_SESSION['acces']) && $_SESSION['acces'] == "oui") {
             $comment = new Commentaire($_POST);
             $okComment = $this->commentManager->ajouterCommentaire($comment);
-            $projs = $this->projetManager->getDetailsProj($_POST["idprojet"]);
+            //affichage des détails du projet
+            $projs = $this->projetManager->getProj($_POST["idprojet"]);
             $detailsources = $this->sourcesManager->getDetailsSource($_POST["idprojet"]);
             $detailconts = $this->contManager->getDetailsContexte($_POST["idprojet"]);
             $detailcates = $this->cateManager->getdetailsCate($_POST["idprojet"]);
@@ -60,13 +60,13 @@ class CommentaireController
             if (!$okComment) {
                 $message = "Problème lors de l'ajout du commentaire";
             }
-            echo $this->twig->render('detailproj.html.twig', array('projs' => $projs, 'detailutis' => $detailutis, 'detailtags' => $detailtags, 'detailcates' => $detailcates, 'detailconts' => $detailconts , 'detailsources' => $detailsources,'notes' => $notes, 'comments' => $comments, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil'=>$_SESSION['photodeprofil'], 'acces' => $_SESSION['acces'],'idutilisateur' => $_SESSION['idutilisateur']));
-        }
-        else {
+            echo $this->twig->render('detailproj.html.twig', array('projs' => $projs, 'detailutis' => $detailutis, 'detailtags' => $detailtags, 'detailcates' => $detailcates, 'detailconts' => $detailconts, 'detailsources' => $detailsources, 'notes' => $notes, 'comments' => $comments, 'message' => $message, 'admin' => $_SESSION['admin'], 'photodeprofil' => $_SESSION['photodeprofil'], 'acces' => $_SESSION['acces'], 'idutilisateur' => $_SESSION['idutilisateur']));
+        } else {
             $message = "Vous devez vous connecté avant d'envoyer un commentaire";
             echo $this->twig->render('utilisateur_connexion.html.twig', array('message' => $message, 'acces' => $_SESSION['acces']));
         }
     }
 
-
 }
+
+?>

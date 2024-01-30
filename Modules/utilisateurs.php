@@ -1,6 +1,6 @@
 <?php
 /** 
- * définition de la classe itineraire
+ * définition de la classe utilisateur
  */
 class Utilisateur
 {
@@ -42,6 +42,7 @@ class Utilisateur
 			$this->_statut = $donnees['statut'];
 		}
 	}
+
 	// GETTERS //
 	public function idUtilisateur()
 	{

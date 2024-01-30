@@ -1,6 +1,6 @@
 <?php
 /**
-* définition de la classe itineraire
+* définition de la classe contexte
 */
 class Contexte {
 	private int $_idcontexte;   
