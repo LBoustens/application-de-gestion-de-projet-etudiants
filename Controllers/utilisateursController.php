@@ -249,7 +249,7 @@ class UtilisateurController
     {
         //Même chose que formulaire d'inscription
         $email = $_POST['email'];
-
+        $password = $_POST['mdp'];
         // Vérifie si l'e-mail se termine par "iut-tlse3.fr"
         if (strpos($email, 'iut-tlse3.fr') === false) {
             $message = "L'adresse e-mail doit se terminer par iut-tlse3.fr";
@@ -281,6 +281,11 @@ class UtilisateurController
             }
 
             $utilisateur = new Utilisateur($_POST);
+
+             // Hache le mot de passe avant de l'ajouter à la base de données
+             $crypterPassword = password_hash($password, PASSWORD_DEFAULT);
+             $utilisateur->setPassword($crypterPassword);
+
             // Si le fichier a été téléchargé avec succès, met à jour $proj avec le nom du fichier
             if (move_uploaded_file($_FILES["photodeprofil"]["tmp_name"], $targetFile)) {
                 // Stocke le nom du fichier dans l'objet $proj
